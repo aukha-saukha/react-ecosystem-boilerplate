@@ -1,0 +1,8 @@
+{
+  "name": "reb",
+  "version": "1.0.0",
+  "description": "React ecosystem boilerplate",
+  "repository": "https://github.com/aukha-saukha/react-ecosystem-boilerplate",
+  "license": "MIT",
+  "main": "index.js"
+}
