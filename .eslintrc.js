@@ -1,11 +1,12 @@
 module.exports = {
   env: {
     browser: true,
+    'jest/globals': true,
     node: true,
   },
-  extends: ['airbnb', 'prettier'],
+  extends: ['airbnb', 'plugin:jest/recommended', 'prettier'],
   parser: 'babel-eslint',
-  plugins: ['prettier'],
+  plugins: ['jest', 'prettier'],
   rules: {
     // Allow object dot notation.
     'dot-notation': 0,

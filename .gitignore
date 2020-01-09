@@ -4,3 +4,4 @@
 # Directories to ignore
 dist
 node_modules
+test/jest/coverage

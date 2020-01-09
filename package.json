@@ -1,6 +1,6 @@
 {
   "name": "react-ecosystem-boilerplate",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React ecosystem boilerplate",
   "repository": "https://github.com/aukha-saukha/react-ecosystem-boilerplate",
   "license": "MIT",
@@ -15,17 +15,24 @@
     "@babel/preset-react": "^7.7.4",
     "@hot-loader/react-dom": "^16.11.0",
     "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.4.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.4.3",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^23.3.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^4.0.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
     "lint-staged": "^9.5.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.0",
@@ -45,8 +52,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-pushed": "lint-staged"
+      "pre-commit": "lint-staged && yarn run jest:related",
+      "pre-pushed": "lint-staged && yarn run jest:related"
     }
   },
   "lint-staged": {
@@ -73,6 +80,10 @@
     "clean:prod:js": "rm -rf dist/prod/private/js/*.js && rm -rf dist/prod/public/js/*.js",
     "clean:prod:stats": "rm -rf dist/prod/public/stats/*.json",
     "eslint": "eslint 'src/**/*.js' && eslint 'tools/**/*.js'",
+    "jest": "jest --config test/jest/config.js --no-cache",
+    "jest:coverage": "yarn jest --colors --coverage",
+    "jest:related": "yarn jest:coverage --bail --changedSince=master",
+    "jest:watch": "yarn jest --watch",
     "lint": "yarn run eslint && yarn run stylelint",
     "stylelint": "stylelint src/**/*.scss",
     "start:dev": "yarn run clean:dev && yarn run build:dev && node dist/dev/private/js/server.js",
