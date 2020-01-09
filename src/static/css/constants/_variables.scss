@@ -1,0 +1,37 @@
+// Border color
+$border-color: (
+  header-bottom: map-get($colors, '225-225-225'),
+  footer-top: map-get($colors, '225-225-225'),
+);
+
+// Breakpoints
+$breakpoints: (
+  xsmall: 480px,
+  small: 768px,
+  medium: 960px,
+  large: 1280px,
+  xlarge: 1600px,
+  xxlarge: 1920px,
+);
+
+// Text color
+$text-color: (
+  base: map-get($colors, '032-032-032'),
+  link: map-get($colors, '12-119-248'),
+  link-footer: map-get($colors, '30-30-30'),
+  link-hover: map-get($colors, '12-119-248'),
+  link-visited: map-get($colors, '12-119-248'),
+  logo: map-get($colors, '12-119-248'),
+);
+
+// Text decoration
+$text-decoration: (
+  link: none,
+  link-hover: none,
+);
+
+// Font family
+$font-family: (
+  base: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+  title: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+);

@@ -1,0 +1,73 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  border: 0;
+  color: map-get($text-color, base);
+  font-family: unquote(map-get($font-family, base));
+  font-weight: 300;
+  min-width: 300px;
+  vertical-align: baseline;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: map-get($text-color, link);
+  text-decoration: map-get($text-decoration, link);
+
+  &:hover {
+    color: map-get($text-color, link-hover);
+    text-decoration: map-get($text-decoration, link-hover);
+  }
+
+  &:visited {
+    color: map-get($text-color, link-visited);
+  }
+}
+
+img {
+  line-height: 0;
+  vertical-align: middle;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  outline: 0;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical;
+}

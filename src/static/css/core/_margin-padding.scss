@@ -1,0 +1,15 @@
+/* 
+  The following code generates global margin and padding classes.
+  For example, classes such as margin-all-5, margin-bottom-10, padding-horizontal-15
+  are generated.
+*/
+
+@each $property-name in ('margin', 'padding') {
+  @each $direction-name in $ALLOWED_DIRECTION_NAMES {
+    @each $size in $MARGIN_PADDING_SIZES_TO_GENERATE {
+      .#{$property-name}-#{$direction-name}-#{$size} {
+        @include directional-property($property-name, $direction-name, #{$size}px);
+      }
+    }
+  }
+}

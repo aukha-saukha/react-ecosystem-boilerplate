@@ -102,6 +102,52 @@ module.exports = {
   // Loaders
   module: {
     rules: [
+      // base.scss loader. Global styles so CSS modules should not be enabled.
+      {
+        exclude: /node_modules/,
+        test: `${PATHS.src}/static/css/base.scss`,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+
+      // CSS, SASS loaders. Only .scss extension is allowed.
+      {
+        exclude: [/node_modules/, `${PATHS.src}/static/css`],
+        test: /\.(c|sc)ss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+                mode: 'local',
+              },
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+
       //   JS loader
       {
         exclude: /node_modules/,

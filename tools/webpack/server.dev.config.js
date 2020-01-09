@@ -32,6 +32,30 @@ module.exports = {
   // Loaders
   module: {
     rules: [
+      // CSS, SASS loaders. Only .scss extension is allowed.
+      {
+        exclude: /node_modules/,
+        test: /\.(c|sc)ss$/,
+        use: [
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+                mode: 'local',
+              },
+              onlyLocals: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+
       // JS loader
       {
         exclude: /node_modules/,

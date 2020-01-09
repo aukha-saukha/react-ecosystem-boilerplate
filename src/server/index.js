@@ -64,6 +64,9 @@ server.get('*', (request, response) => {
         <title>React ecosystem boilerplate</title>
         <meta name="description" content="React ecosystem boilerplate" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="${
+          runTimeEnvironment === 'prod' ? stats['styles'] : '/css/styles.css'
+        }" rel="stylesheet" />
       </head>
       <body>
         <div id="root">`);
