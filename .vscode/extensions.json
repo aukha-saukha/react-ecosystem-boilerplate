@@ -3,9 +3,12 @@
   "recommendations": [
     "coenraads.bracket-pair-colorizer",
     "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
     "davidanson.vscode-markdownlint",
+    "dbaeumer.vscode-eslint",
     "dsznajder.es7-react-js-snippets",
     "sirtori.indenticator",
+    "stylelint.vscode-stylelint",
     "wix.vscode-import-cost",
     "xabikos.javascriptsnippets"
   ],
