@@ -22,7 +22,7 @@ if (module.hot) {
 } else {
   if (rootElement === null) {
     throw new Error('Element with id #root is not found.');
-  } else {
-    hydrate(<App />, rootElement);
   }
+
+  hydrate(<App />, rootElement);
 }

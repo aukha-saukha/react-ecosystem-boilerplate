@@ -12,12 +12,14 @@ let stats;
 // Please don't refactor, and use runTimeEnvironment instead of process.env.NODE_ENV in the
 // condition below. Webpack doesn't compile successfully.
 if (process.env.NODE_ENV === 'production') {
+  /* eslint-disable import/no-unresolved */
   import('../../dist/prod/public/stats/manifest.json')
     .then((module) => {
       stats = module.default;
     })
     .catch((err) => {
-      console.log('Error: ' + err.message);
+      // eslint-disable-next-line no-console
+      console.log(`Error: ${err.message}`);
     });
 }
 
@@ -87,5 +89,6 @@ server.get('*', (request, response) => {
 
 // Bind and listen for connections on the specified port.
 server.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Express server listening on port ${port}`);
 });

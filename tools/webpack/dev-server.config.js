@@ -13,7 +13,7 @@ module.exports = {
 
   // Options related to webpack-dev-server
   devServer: {
-    before: function() {
+    before: () => {
       // Make distBaseWds  i.e. dist/wds directory if it doesn't exist already.
       if (!fs.existsSync(PATHS.distBaseWds)) {
         fs.mkdirSync(PATHS.distBaseWds, {
@@ -26,10 +26,10 @@ module.exports = {
       // Create index.html file under distBaseWds i.e. dist/wds directory if it doesn't exist.
       if (fs.existsSync(indexFile)) {
         return;
-      } else {
-        fs.writeFile(
-          indexFile,
-          `<!DOCTYPE html>
+      }
+      fs.writeFile(
+        indexFile,
+        `<!DOCTYPE html>
         <html>
             <head>
             <meta charset="UTF-8" />
@@ -43,13 +43,13 @@ module.exports = {
             <script src='js/vendor.js'></script>
             </body>
         </html>`,
-          function(err) {
-            if (err) {
-              return console.log(err);
-            }
+        function writeFileError(err) {
+          if (err) {
+            // eslint-disable-next-line no-console
+            console.log(err);
           }
-        );
-      }
+        }
+      );
     },
 
     // Base path for the content.
