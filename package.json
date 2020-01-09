@@ -1,8 +1,43 @@
 {
-  "name": "reb",
-  "version": "1.0.0",
+  "name": "react-ecosystem-boilerplate",
+  "version": "1.0.1",
   "description": "React ecosystem boilerplate",
   "repository": "https://github.com/aukha-saukha/react-ecosystem-boilerplate",
   "license": "MIT",
-  "main": "index.js"
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "@hot-loader/react-dom": "^16.11.0",
+    "babel-loader": "^8.0.6",
+    "react-hot-loader": "^4.12.18",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1",
+    "webpack-manifest-plugin": "^2.2.0"
+  },
+  "scripts": {
+    "build:dev": "yarn run build:dev:client && yarn run build:dev:server",
+    "build:dev:client": "webpack --config tools/webpack/client.dev.config.js",
+    "build:dev:server": "webpack --config tools/webpack/server.dev.config.js",
+    "build:prod": "yarn run build:prod:client && yarn run build:prod:server",
+    "build:prod:client": "webpack --config tools/webpack/client.prod.config.js",
+    "build:prod:server": "webpack --config tools/webpack/server.prod.config.js",
+    "clean:dev": "yarn run clean:dev:css && yarn run clean:dev:js && yarn run clean:dev:stats",
+    "clean:prod": "yarn run clean:prod:css && yarn run clean:prod:js && yarn run clean:prod:stats",
+    "clean:dev:css": "rm -rf dist/dev/public/css/*.css",
+    "clean:dev:js": "rm -rf dist/dev/private/js/*.js && rm -rf dist/dev/public/js/*.js",
+    "clean:dev:stats": "rm -rf dist/dev/public/stats/*.json",
+    "clean:prod:css": "rm -rf dist/prod/public/css/*.css",
+    "clean:prod:js": "rm -rf dist/prod/private/js/*.js && rm -rf dist/prod/public/js/*.js",
+    "clean:prod:stats": "rm -rf dist/prod/public/stats/*.json",
+    "start:dev": "yarn run clean:dev && yarn run build:dev && node dist/dev/private/js/server.js",
+    "start:prod": "yarn run clean:prod && yarn run build:prod && node dist/prod/private/js/server.js",
+    "wds": "webpack-dev-server --config tools/webpack/dev-server.config.js"
+  }
 }
