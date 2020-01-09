@@ -1,0 +1,10 @@
+/*
+  The following code generates global font size classes.
+  For example, classes such as font-size-14, font-size-16 etc.
+*/
+
+@each $size in $FONT_SIZES_TO_GENERATE {
+  .font-size-#{$size*10} {
+    font-size: #{$size}rem;
+  }
+}

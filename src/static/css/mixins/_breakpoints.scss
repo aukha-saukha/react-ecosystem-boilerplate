@@ -1,0 +1,108 @@
+/*******************************************************************************
+  This file is inspired by bootstrap (Thanks, you wonderful people).
+/******************************************************************************/
+// The below function returns maximum breakpoint width, and
+// null for the largest (last) breakpoint.
+@function breakpoint-max($name, $breakpoints) {
+  $next: breakpoint-next($name, $breakpoints);
+  @return if($next, breakpoint-min($next, $breakpoints) - 0.02, null);
+}
+
+// The below function returns minimum breakpoint width, and
+// null for the smallest (first) breakpoint.
+@function breakpoint-min($name, $breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+// The below function returns name of the next breakpoint, and
+// null for the last breakpoint.
+@function breakpoint-next($name, $breakpoints, $breakpoint-names: map-keys($breakpoints)) {
+  $n: index($breakpoint-names, $name);
+  @return if($n != null and $n < length($breakpoint-names), nth($breakpoint-names, $n + 1), null);
+}
+
+/*
+    The below mixing returns a media query that spans between two given 
+    breakpoint widths.
+    Usage: 
+      @include media-breakpoint-between("small", "xlarge", $breakpoints) {
+        .class-name {
+          color: green;
+        }
+      }
+    Result:
+      @media (min-width: 768px) and (max-width: 1919.98px) {
+        .class-name {
+          color: green;
+        }
+      }
+  */
+@mixin media-breakpoint-between($lower, $upper, $breakpoints) {
+  $min: breakpoint-min($lower, $breakpoints);
+  $max: breakpoint-max($upper, $breakpoints);
+
+  @if $min != null and $max != null {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $max == null {
+    @include media-breakpoint-up($lower, $breakpoints) {
+      @content;
+    }
+  } @else if $min == null {
+    @include media-breakpoint-down($upper, $breakpoints) {
+      @content;
+    }
+  }
+}
+
+/* 
+    The below mixing returns a media query that is applicable to the given
+    breakpoint and below.
+    Usage:
+      @include media-breakpoint-down("small", $breakpoints) {
+        .class-name {
+          color: green;
+        }
+      }
+    Result:
+      @media (max-width: 959.98px) {
+        .class-name {
+          color: green;
+        }
+      }
+  */
+@mixin media-breakpoint-down($name, $breakpoints) {
+  $max: breakpoint-max($name, $breakpoints);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}
+
+/* 
+    The below mixing returns a media query that is applicable to the given
+    breakpoint and above.
+    Usage:
+      @include media-breakpoint-up("xsmall", $breakpoints) {
+        .class-name {
+          color: red;
+        }
+      }
+    Result:
+      @media (min-width: 480px) {
+        .class-name {
+          color: red;
+        }
+      }
+  */
+@mixin media-breakpoint-up($name, $breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  }
+}

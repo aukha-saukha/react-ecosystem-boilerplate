@@ -1,0 +1,88 @@
+/*******************************************************************************
+  Sample usage:
+  .margin-vertical-10 {
+    @include directional-property(margin, vertical, 10px);
+  }
+
+  More usage:
+  Input -> Output
+  directional-property(margin, all, 10px)                -> margin: 10px;
+  directional-property(margin, bottom, 10px)             -> margin-bottom: 10px;
+  directional-property(margin, horizontal, 10px)         -> margin: 0 10px;
+  directional-property(margin, horizontal, 10px 5px)     -> margin: 0 10px 0 5px;
+  directional-property(margin, left, 10px)               -> margin-left: 10px;
+  directional-property(margin, right, 10px)              -> margin-right: 10px;
+  directional-property(margin, top, 10px)                -> margin-top: 10px;
+  directional-property(margin, vertical, 10px)           -> margin: 10px 0;
+  directional-property(margin, vertical, 10px 5px)       -> margin: 10px 0 5px 0;
+  directional-property(margin, null, 10px 20px 10px)     -> margin: 10px 20px 10px;
+  directional-property(margin, null, 10px 20px 15px 5px) -> margin: 10px 20px 15px 5px;
+/******************************************************************************/
+@mixin directional-property($property-name, $direction-name, $values) {
+  // Check to make sure the property name is a string.
+  @if (type-of($property-name) != string) {
+    @error 'Propery name needs to be a string.';
+  }
+
+  // Check to only allow certain direction names.
+  @if ($direction-name != null and index($ALLOWED_DIRECTION_NAMES, $direction-name) == null) {
+    @error 'Please provide a valid direction name. The allowed values are null, all, bottom, horizontal, left, right, top, and vertical.';
+  }
+
+  // Only one value can be specified if the direction name is all, bottom, left, right, or top.
+  @if (
+    (
+        $direction-name ==
+          'all' or
+          $direction-name ==
+          'bottom' or
+          $direction-name ==
+          'left' or
+          $direction-name ==
+          'right' or
+          $direction-name ==
+          'top'
+      ) and
+      length($values) !=
+      1
+  ) {
+    @error 'If you want to use #{$direction-name} as the direction name, then please specify only one value.';
+
+    // One or two values can be specified for horizontal or vertical directions. If one value is specified, then
+    // the same value will be used for both values.
+  } @else if
+    (
+      ($direction-name == 'horizontal' or $direction-name == 'vertical') and
+        length($values) !=
+        1 and
+        length($values) !=
+        2
+    )
+  {
+    @error 'If you want to use #{$direction-name} as the direction name, then please specify either one (if both values are the same) or two values.';
+  }
+
+  @if ($direction-name == null or $direction-name == 'all') {
+    #{$property-name}: $values;
+  } @else if ($direction-name == 'bottom') {
+    #{$property-name}-bottom: $values;
+  } @else if ($direction-name == 'horizontal') {
+    @if length($values) == 2 {
+      #{$property-name}: 0 nth($values, 1) 0 nth($values, 2);
+    } @else {
+      #{$property-name}: 0 $values;
+    }
+  } @else if ($direction-name == 'left') {
+    #{$property-name}-left: $values;
+  } @else if ($direction-name == 'right') {
+    #{$property-name}-right: $values;
+  } @else if ($direction-name == 'top') {
+    #{$property-name}-top: $values;
+  } @else if ($direction-name == 'vertical') {
+    @if length($values) == 2 {
+      #{$property-name}: nth($values, 1) 0 nth($values, 2) 0;
+    } @else {
+      #{$property-name}: $values 0;
+    }
+  }
+}

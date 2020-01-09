@@ -2,6 +2,8 @@
 
 This production ready boilerplate has following feature:
 
+- CSS, SASS with CSS modules support.
+- Hot reloading using react hot loader and webpack dev server.
 - Universal/isomorphic application.
 
 ## Usage

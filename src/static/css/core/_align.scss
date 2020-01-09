@@ -1,0 +1,17 @@
+// Align related styles
+
+// Aligns both horizontally and vertically
+.align-perfectly-centered {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+// Aligns vertically
+// I think it needs to have set height too.
+// Please test, and if correct, make necessary changes.
+.align-vertically-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

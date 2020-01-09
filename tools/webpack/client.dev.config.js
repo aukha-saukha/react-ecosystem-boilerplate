@@ -1,3 +1,5 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 // Common config options
 const { BROWSERS_LIST, EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
 
@@ -23,6 +25,56 @@ module.exports = {
   // Loaders
   module: {
     rules: [
+      // base.scss loader. Global styles so CSS modules should not be enabled.
+      {
+        exclude: /node_modules/,
+        test: `${PATHS.src}/static/css/base.scss`,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+
+      // CSS, SASS loaders. Only .scss extension is allowed.
+      {
+        exclude: [/node_modules/, `${PATHS.src}/static/css`],
+        test: /\.(c|sc)ss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+                mode: 'local',
+              },
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+
       // JS loader
       {
         exclude: /node_modules/,
@@ -111,7 +163,18 @@ module.exports = {
   plugins: [
     // Plugin to create required directories if they don't exist already.
     new CreateRequiredDirectoriesPlugin({
-      dirs: [PATHS.distBase, PATHS.distBaseDev, PATHS.distDevPublic, PATHS.distDevPublicJS],
+      dirs: [
+        PATHS.distBase,
+        PATHS.distBaseDev,
+        PATHS.distDevPublic,
+        PATHS.distDevPublicCSS,
+        PATHS.distDevPublicJS,
+      ],
+    }),
+
+    // Extract CSS to an exernal file
+    new MiniCssExtractPlugin({
+      filename: '../css/styles.css',
     }),
   ],
 
