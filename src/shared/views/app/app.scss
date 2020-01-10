@@ -1,3 +1,17 @@
-.greeting {
+.wrapper {
+  display: grid;
   font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
+  grid-template-areas:
+    'header'
+    'page-specific-content'
+    'footer';
+  grid-template-rows: auto 1fr auto;
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: 100vh;
+  min-width: 300px;
+}
+
+.page-specific-content {
+  grid-area: page-specific-content;
 }

@@ -2,8 +2,36 @@
 
 exports[`App component Renders correctly 1`] = `
 <div
-  className="font-size-14 greeting"
+  className="wrapper"
 >
-  Hello World!
+  <Header />
+  <section
+    className="padding-all-15 page-specific-content"
+  >
+    <Switch>
+      <Route
+        exact={true}
+        key="/about-us"
+        path="/about-us"
+        render={[Function]}
+      />
+      <Route
+        exact={true}
+        key="/contact-us"
+        path="/contact-us"
+        render={[Function]}
+      />
+      <Route
+        exact={true}
+        key="/"
+        path="/"
+        render={[Function]}
+      />
+      <Route
+        component={[Function]}
+      />
+    </Switch>
+  </section>
+  <Footer />
 </div>
 `;

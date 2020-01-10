@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer component Renders correctly 1`] = `
+<footer
+  className="display-flex flex-items-align-center padding-all-15 footer"
+>
+  <nav>
+    <ul
+      className="display-flex"
+    >
+      <li
+        key="About us"
+      >
+        <NavLink
+          className="links"
+          to="/about-us"
+        >
+          About us
+        </NavLink>
+      </li>
+      <li
+        key="Contact us"
+      >
+        <NavLink
+          className="links"
+          to="/contact-us"
+        >
+          Contact us
+        </NavLink>
+      </li>
+    </ul>
+  </nav>
+</footer>
+`;

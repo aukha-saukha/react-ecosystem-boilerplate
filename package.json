@@ -1,19 +1,24 @@
 {
   "name": "react-ecosystem-boilerplate",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "React ecosystem boilerplate",
   "repository": "https://github.com/aukha-saukha/react-ecosystem-boilerplate",
   "license": "MIT",
   "dependencies": {
+    "@loadable/component": "^5.12.0",
+    "@loadable/server": "^5.12.0",
     "express": "^4.17.1",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@hot-loader/react-dom": "^16.11.0",
+    "@loadable/babel-plugin": "^5.12.0",
+    "@loadable/webpack-plugin": "^5.12.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
@@ -47,8 +52,7 @@
     "terser-webpack-plugin": "^2.3.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1",
-    "webpack-manifest-plugin": "^2.2.0"
+    "webpack-dev-server": "^3.10.1"
   },
   "husky": {
     "hooks": {
@@ -72,10 +76,10 @@
     "build:prod:client": "webpack --config tools/webpack/client.prod.config.js",
     "build:prod:server": "webpack --config tools/webpack/server.prod.config.js",
     "clean:dev": "yarn run clean:dev:css && yarn run clean:dev:js && yarn run clean:dev:stats",
-    "clean:prod": "yarn run clean:prod:css && yarn run clean:prod:js && yarn run clean:prod:stats",
     "clean:dev:css": "rm -rf dist/dev/public/css/*.css",
     "clean:dev:js": "rm -rf dist/dev/private/js/*.js && rm -rf dist/dev/public/js/*.js",
     "clean:dev:stats": "rm -rf dist/dev/public/stats/*.json",
+    "clean:prod": "yarn run clean:prod:css && yarn run clean:prod:js && yarn run clean:prod:stats",
     "clean:prod:css": "rm -rf dist/prod/public/css/*.css",
     "clean:prod:js": "rm -rf dist/prod/private/js/*.js && rm -rf dist/prod/public/js/*.js",
     "clean:prod:stats": "rm -rf dist/prod/public/stats/*.json",

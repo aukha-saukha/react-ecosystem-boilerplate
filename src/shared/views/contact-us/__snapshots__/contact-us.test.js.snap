@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactUs component Renders correctly 1`] = `
+<main
+  className="font-size-16"
+>
+  Contact us page
+</main>
+`;

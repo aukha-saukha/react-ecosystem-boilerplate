@@ -1,7 +1,7 @@
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-const WebpackManifestPlugin = require('webpack-manifest-plugin');
 
 // Common config options
 const { BROWSERS_LIST, EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
@@ -73,6 +73,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@loadable/babel-plugin'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -144,7 +145,7 @@ module.exports = {
           chunks: 'all',
           enforce: true,
           name: 'vendor',
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          test: /[\\/]node_modules[\\/](@loadable\/component|react|react-dom|react-router-dom)[\\/]/,
         },
       },
     },
@@ -182,36 +183,16 @@ module.exports = {
       ],
     }),
 
-    // Plug in to generate an asset manifest
-    new WebpackManifestPlugin({
-      fileName: `${PATHS.distProdPublicStats}/manifest.json`,
+    new LoadablePlugin({
+      // Manifest file name
+      filename: '../stats/loadable-stats.json',
 
-      // Unfortunately, webpack creates an additional styles.js file for styles split chunk.
-      filter: (file) => {
-        return file.name !== 'styles.js';
-      },
+      // Write assets to disk at given filename location
+      writeToDisk: true,
+    }),
 
-      // The below function does the following things:
-      // 1. If the current file path has 'js/../css/' i.e. CSS file, then rename it to 'styles'.
-      // 2. If the current file path doesn't have 'js/../css/' i.e. JS files, then removes extension
-      //    from the key values of the manifest file.
-      // 3. Replaces 'js/../css/' to 'css/'.
-      map: (file) => {
-        return {
-          ...file,
-          name:
-            file.path.indexOf('js/../css/') !== -1
-              ? 'styles'
-              : file.name
-                  .split('.')
-                  .slice(0, -1)
-                  .join('.'),
-          path:
-            file.path.indexOf('js/../css/') !== -1
-              ? file.path.replace('js/../css/', 'css/')
-              : file.path,
-        };
-      },
+    new MiniCssExtractPlugin({
+      filename: '../css/[name].[contenthash].css',
     }),
   ],
 

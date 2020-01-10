@@ -45,6 +45,8 @@ module.exports = {
         </html>`,
         function writeFileError(err) {
           if (err) {
+            // The reason to disable no-console rule here is because we need error details as
+            // console log.
             // eslint-disable-next-line no-console
             console.log(err);
           }
@@ -90,8 +92,10 @@ module.exports = {
 
     // Vendor
     vendor: [
+      '@loadable/component',
       'react',
       'react-dom',
+      'react-router-dom',
       `webpack-dev-server/client?http://localhost:${PORTS.webpackDevServer}`,
     ],
   },

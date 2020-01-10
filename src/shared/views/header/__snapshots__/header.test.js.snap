@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component Renders correctly 1`] = `
+<header
+  className="display-flex flex-items-align-center padding-all-15 header"
+>
+  <h1>
+    <NavLink
+      className="width-100 logo"
+      to="/"
+    >
+      REB
+    </NavLink>
+  </h1>
+</header>
+`;
