@@ -1,0 +1,21 @@
+@import '../../../static/css/constants/colors';
+@import '../../../static/css/constants/variables';
+
+.header {
+  border-bottom: 1px solid map-get($border-color, header-bottom);
+  grid-area: header;
+}
+
+.logo {
+  color: map-get($text-color, logo);
+  font-weight: normal;
+
+  &:hover {
+    color: map-get($text-color, logo);
+    text-decoration: none;
+  }
+
+  &:visited {
+    color: map-get($text-color, logo);
+  }
+}

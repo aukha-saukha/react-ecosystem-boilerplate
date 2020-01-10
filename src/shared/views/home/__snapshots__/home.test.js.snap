@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home component Renders correctly 1`] = `
+<main
+  className="font-size-16"
+>
+  Home page
+</main>
+`;

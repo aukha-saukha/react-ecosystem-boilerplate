@@ -1,3 +1,4 @@
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // Common config options
@@ -83,6 +84,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@loadable/babel-plugin'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -136,7 +138,7 @@ module.exports = {
           chunks: 'all',
           enforce: true,
           name: 'vendor',
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          test: /[\\/]node_modules[\\/](@loadable\/component|react|react-dom|react-router-dom)[\\/]/,
         },
       },
     },
@@ -169,7 +171,16 @@ module.exports = {
         PATHS.distDevPublic,
         PATHS.distDevPublicCSS,
         PATHS.distDevPublicJS,
+        PATHS.distDevPublicStats,
       ],
+    }),
+
+    new LoadablePlugin({
+      // Manifest file name
+      filename: '../stats/loadable-stats.json',
+
+      // Write assets to disk at given filename location
+      writeToDisk: true,
     }),
 
     // Extract CSS to an exernal file

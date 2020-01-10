@@ -1,5 +1,7 @@
+import { loadableReady } from '@loadable/component';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import App from '../shared/views/app';
 
@@ -9,9 +11,14 @@ if (module.hot) {
   const renderApp = () => {
     if (rootElement === null) {
       throw new Error('Element with id #root is not found.');
-    } else {
-      render(<App />, rootElement);
     }
+
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+      rootElement
+    );
   };
 
   renderApp();
@@ -24,5 +31,12 @@ if (module.hot) {
     throw new Error('Element with id #root is not found.');
   }
 
-  hydrate(<App />, rootElement);
+  loadableReady(() => {
+    hydrate(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+      rootElement
+    );
+  });
 }

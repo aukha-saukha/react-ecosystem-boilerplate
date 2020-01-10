@@ -1,0 +1,20 @@
+@import '../../../static/css/constants/colors';
+@import '../../../static/css/constants/variables';
+
+.footer {
+  border-top: 1px solid map-get($border-color, footer-top);
+  grid-area: footer;
+}
+
+.footer li:not(:last-child) {
+  margin-right: 15px;
+}
+
+.links {
+  color: map-get($text-color, link-footer);
+  font-size: 1.6rem;
+
+  &:hover {
+    color: map-get($text-color, link-footer);
+  }
+}

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotFound component Renders correctly 1`] = `
+<main
+  className="font-size-16"
+>
+  Four oh! Four
+</main>
+`;
