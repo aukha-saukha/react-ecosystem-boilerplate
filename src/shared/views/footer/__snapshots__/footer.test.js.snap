@@ -13,6 +13,7 @@ exports[`Footer component Renders correctly 1`] = `
       >
         <NavLink
           className="links"
+          data-test="about-us"
           to="/about-us"
         >
           About us
@@ -23,6 +24,7 @@ exports[`Footer component Renders correctly 1`] = `
       >
         <NavLink
           className="links"
+          data-test="contact-us"
           to="/contact-us"
         >
           Contact us
