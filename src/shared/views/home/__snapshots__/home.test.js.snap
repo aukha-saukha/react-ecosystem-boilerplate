@@ -3,6 +3,7 @@
 exports[`Home component Renders correctly 1`] = `
 <main
   className="font-size-16"
+  data-test="main"
 >
   Home page
 </main>

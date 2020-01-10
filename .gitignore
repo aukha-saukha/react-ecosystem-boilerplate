@@ -4,4 +4,5 @@
 # Directories to ignore
 dist
 node_modules
+test/cypress/videos
 test/jest/coverage

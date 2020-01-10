@@ -14,7 +14,11 @@ function Footer() {
         <ul className="display-flex">
           {FOOTER_LINKS.map((footerLink) => (
             <li key={footerLink.name}>
-              <NavLink className={footerStyle['links']} to={footerLink.linkToLocation}>
+              <NavLink
+                className={footerStyle['links']}
+                data-test={footerLink.dataTest}
+                to={footerLink.linkToLocation}
+              >
                 {footerLink.name}
               </NavLink>
             </li>
