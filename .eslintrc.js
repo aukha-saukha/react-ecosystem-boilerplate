@@ -18,5 +18,7 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
     // Disallow arrow function or bind call as a prop for performance reasons
     'react/jsx-no-bind': 2,
+    // Turn off prop types warning, because we'll use flow for react components.
+    'react/prop-types': 0,
   },
 };
