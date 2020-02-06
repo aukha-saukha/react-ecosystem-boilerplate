@@ -1,11 +1,13 @@
-import React from 'react';
+// @flow strict-local
+
+import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import footerStyle from './footer.scss';
 
 import { FOOTER_LINKS } from '../../../data/views-schema/footer';
 
-function Footer() {
+function Footer(): React.Element<'footer'> {
   return (
     <footer
       className={`display-flex flex-items-align-center padding-all-15 ${footerStyle['footer']}`}

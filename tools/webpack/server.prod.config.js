@@ -91,6 +91,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@babel/plugin-proposal-class-properties'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -102,6 +103,7 @@ module.exports = {
                     },
                   },
                 ],
+                '@babel/preset-flow',
                 '@babel/preset-react',
               ],
             },
@@ -128,10 +130,6 @@ module.exports = {
 
     // The target directory where webpack should store the output file(s).
     path: PATHS.distProdPrivateJS,
-
-    // The url to the output directory resolved relative to the HTML page which
-    // will be used to serve the bundled file(s).
-    publicPath: 'js/',
   },
 
   // Plugins

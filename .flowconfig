@@ -1,0 +1,39 @@
+[ignore]
+
+[include]
+
+[libs]
+./flow-typed
+module.name_mapper.extension='scss' -> 'empty/object'
+module.system=haste
+
+[lints]
+ambiguous-object-type=warn
+deprecated-type=warn
+deprecated-utility=warn
+; dynamic-export=warn
+implicit-inexact-object=warn
+nonstrict-import=warn
+sketchy-null=warn
+sketchy-number=warn
+unclear-type=warn
+unnecessary-invariant=warn
+unnecessary-optional-chain=warn
+unsafe-getters-setters=warn
+; untyped-import=warn
+untyped-type-import=warn
+
+[options]
+emoji=true
+include_warnings=true
+module.file_ext=.scss
+module.file_ext=.js
+module.file_ext=.json
+suppress_comment= \\(.\\|\n\\)*\\flow-disable-line
+
+[strict]
+nonstrict-import
+unclear-type
+unsafe-getters-setters
+; untyped-import
+untyped-type-import

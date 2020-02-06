@@ -100,6 +100,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@babel/plugin-proposal-class-properties'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -111,6 +112,7 @@ module.exports = {
                     },
                   },
                 ],
+                '@babel/preset-flow',
                 '@babel/preset-react',
               ],
             },
@@ -161,7 +163,7 @@ module.exports = {
 
     // The url to the output directory resolved relative to the HTML page which
     // will be used to serve the bundled file(s).
-    publicPath: 'js/',
+    publicPath: '/js/',
   },
 
   // Show warning if chunk size is too large
@@ -189,10 +191,6 @@ module.exports = {
 
       // Write assets to disk at given filename location
       writeToDisk: true,
-    }),
-
-    new MiniCssExtractPlugin({
-      filename: '../css/[name].[contenthash].css',
     }),
   ],
 

@@ -1,17 +1,24 @@
+// @flow strict
+
 import React from 'react';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+import type {
+  ErrorBoundaryPropsType,
+  ErrorBoundaryStateType,
+  ErrorInfoType,
+} from './error-boundary.type';
+
+class ErrorBoundary extends React.Component<ErrorBoundaryPropsType, ErrorBoundaryStateType> {
+  state = {
+    hasError: false,
+  };
 
   // eslint-disable-next-line no-unused-vars
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryStateType {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfoType): void {
     // TODO: use a logger such as winston, and remove the following console log statement.
     // eslint-disable-next-line no-console
     console.log(error, errorInfo);

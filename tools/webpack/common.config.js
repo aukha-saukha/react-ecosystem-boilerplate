@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 
 // List of supported browsers
-const BROWSERS_LIST = ['>0.2%', 'not dead', 'not ie <= 11', 'not op_mini all'];
+const BROWSERS_LIST = ['defaults', 'not IE 11', 'not IE_Mob 11'];
 
 // Distribution base directory
 const distBase = resolve(__dirname, '../../dist');

@@ -1,37 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App component Renders correctly 1`] = `
-<div
-  className="wrapper"
->
-  <Header />
-  <section
-    className="padding-all-15 page-specific-content"
+<ErrorBoundary>
+  <div
+    className="wrapper"
   >
-    <Switch>
-      <Route
-        exact={true}
-        key="/about-us"
-        path="/about-us"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        key="/contact-us"
-        path="/contact-us"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        key="/"
-        path="/"
-        render={[Function]}
-      />
-      <Route
-        component={[Function]}
-      />
-    </Switch>
-  </section>
-  <Footer />
-</div>
+    <Header />
+    <section
+      className="padding-all-15 page-specific-content"
+    >
+      <Switch>
+        <Route
+          exact={true}
+          key="/about-us"
+          path="/about-us"
+          render={[Function]}
+        />
+        <Route
+          exact={true}
+          key="/contact-us"
+          path="/contact-us"
+          render={[Function]}
+        />
+        <Route
+          exact={true}
+          key="/"
+          path="/"
+          render={[Function]}
+        />
+        <Route
+          component={[Function]}
+        />
+      </Switch>
+    </section>
+    <Footer />
+  </div>
+</ErrorBoundary>
 `;
