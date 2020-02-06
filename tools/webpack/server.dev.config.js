@@ -90,6 +90,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@babel/plugin-proposal-class-properties'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -100,6 +101,7 @@ module.exports = {
                     },
                   },
                 ],
+                '@babel/preset-flow',
                 '@babel/preset-react',
               ],
             },
@@ -118,6 +120,9 @@ module.exports = {
 
   // Options related to how webpack emits results
   output: {
+    // Name of non-entry chunk files
+    chunkFilename: '[name].[contenthash].js',
+
     // The filename template for entry chunks.
     filename: '[name].js',
 
@@ -127,10 +132,6 @@ module.exports = {
     // Include comments in bundles with information about the contained modules.
     // Use in Dev environment only.
     pathinfo: true,
-
-    // The url to the output directory resolved relative to the HTML page which
-    // will be used to serve the bundled file(s).
-    publicPath: 'js/',
   },
 
   // Plugins

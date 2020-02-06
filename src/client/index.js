@@ -1,3 +1,5 @@
+// @flow strict-local
+
 import { loadableReady } from '@loadable/component';
 import React from 'react';
 import { hydrate, render } from 'react-dom';
@@ -7,6 +9,7 @@ import App from '../shared/views/app';
 
 const rootElement = document.getElementById('root');
 
+// flow-disable-line
 if (module.hot) {
   const renderApp = () => {
     if (rootElement === null) {
@@ -23,6 +26,7 @@ if (module.hot) {
 
   renderApp();
 
+  // flow-disable-line
   module.hot.accept('../shared/views/app', () => {
     renderApp();
   });

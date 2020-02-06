@@ -110,6 +110,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@babel/plugin-proposal-class-properties'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -120,6 +121,7 @@ module.exports = {
                     },
                   },
                 ],
+                '@babel/preset-flow',
                 '@babel/preset-react',
               ],
             },
@@ -147,7 +149,7 @@ module.exports = {
   // Options related to how webpack emits results
   output: {
     // The filename template for entry chunks.
-    filename: '[name].js',
+    filename: '[name].[chunkhash].js',
 
     // The target directory where webpack should store the output file(s).
     path: PATHS.distDevPublicJS,
@@ -158,7 +160,7 @@ module.exports = {
 
     // The url to the output directory resolved relative to the HTML page which
     // will be used to serve the bundled file(s).
-    publicPath: 'js/',
+    publicPath: '/js/',
   },
 
   // Plugins
@@ -185,7 +187,7 @@ module.exports = {
 
     // Extract CSS to an exernal file
     new MiniCssExtractPlugin({
-      filename: '../css/styles.css',
+      filename: '../css/[name].[contenthash].css',
     }),
   ],
 

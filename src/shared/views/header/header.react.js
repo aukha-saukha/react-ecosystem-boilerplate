@@ -1,11 +1,13 @@
-import React from 'react';
+// @flow strict
+
+import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import headerStyle from './header.scss';
 
 import { LOGO } from '../../../data/views-schema/header';
 
-function Header() {
+function Header(): React.Element<'header'> {
   return (
     <header
       className={`display-flex flex-items-align-center padding-all-15 ${headerStyle['header']}`}

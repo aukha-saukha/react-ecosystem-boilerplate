@@ -185,7 +185,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['react-hot-loader/babel'],
+              plugins: ['@babel/plugin-proposal-class-properties', 'react-hot-loader/babel'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -196,6 +196,7 @@ module.exports = {
                     },
                   },
                 ],
+                '@babel/preset-flow',
                 '@babel/preset-react',
               ],
             },

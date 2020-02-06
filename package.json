@@ -1,6 +1,6 @@
 {
   "name": "react-ecosystem-boilerplate",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "React ecosystem boilerplate",
   "repository": "https://github.com/aukha-saukha/react-ecosystem-boilerplate",
   "license": "MIT",
@@ -14,7 +14,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.7.7",
+    "@babel/preset-flow": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
     "@hot-loader/react-dom": "^16.11.0",
     "@loadable/babel-plugin": "^5.12.0",
@@ -36,6 +38,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "flow-bin": "^0.115.0",
     "husky": "^4.0.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
@@ -57,8 +60,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn run jest:related",
-      "pre-pushed": "lint-staged && yarn run jest:related"
+      "pre-commit": "lint-staged && yarn run flow && yarn run jest:related",
+      "pre-pushed": "lint-staged && yarn run flow && yarn run jest:related"
     }
   },
   "lint-staged": {
@@ -89,6 +92,7 @@
     "cy:run:dev": "cypress run --config-file test/cypress/config.json --env testEnvName=development",
     "cy:run:prod": "cypress run --config-file test/cypress/config.json --env testEnvName=production",
     "eslint": "eslint 'src/**/*.js' && eslint 'tools/**/*.js'",
+    "flow": "flow",
     "jest": "jest --config test/jest/config.js --no-cache",
     "jest:coverage": "yarn jest --colors --coverage",
     "jest:related": "yarn jest:coverage --bail --changedSince=master",

@@ -1,5 +1,8 @@
+// @flow strict-local
+
 import { ChunkExtractor } from '@loadable/server';
 import express from 'express';
+import type { $Request, $Response } from 'express';
 import { resolve } from 'path';
 import React from 'react';
 import { renderToNodeStream } from 'react-dom/server';
@@ -28,9 +31,16 @@ const loadableChunkExtractor = new ChunkExtractor({
 });
 
 // Port - first try to use port from process environment.
-// If it's not found, use it from the app config file.
-// If it doesn't exist in the app config file either, use 3000.
-const port = process.env.PORT || runTimeEnvironment === 'prod' ? PORTS.prod : PORTS.dev || 3000;
+// If it's not found or not correct type, use it from the app config file based on environment.
+// If it doesn't exist or of wrong type in the app config file, then use 3000.
+let port = 3000;
+if (typeof process.env.PORT === 'number') {
+  port = process.env.PORT;
+} else if (runTimeEnvironment === 'prod' && typeof PORTS.prod === 'number') {
+  port = PORTS.prod;
+} else if (runTimeEnvironment === 'dev' && typeof PORTS.dev === 'number') {
+  port = PORTS.dev;
+}
 
 // Replace 'js/../css' to 'css'
 const styleTags = loadableChunkExtractor.getStyleTags().replace(/js\/..\/css/g, 'css');
@@ -56,7 +66,7 @@ server.use(
 );
 
 // Render to node stream
-server.get('*', (request, response) => {
+server.get('*', (request: $Request, response: $Response) => {
   response.set('content-type', 'text/html');
 
   response.write(`<!DOCTYPE html>

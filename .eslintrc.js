@@ -20,5 +20,7 @@ module.exports = {
     'react/jsx-no-bind': 2,
     // Turn off prop types warning, because we'll use flow for react components.
     'react/prop-types': 0,
+    // Enforce state initialization style to be with a class property.
+    'react/state-in-constructor': [1, 'never'],
   },
 };
