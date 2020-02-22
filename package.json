@@ -1,9 +1,4 @@
 {
-  "name": "react-ecosystem-boilerplate",
-  "version": "1.0.8",
-  "description": "React ecosystem boilerplate",
-  "repository": "https://github.com/aukha-saukha/react-ecosystem-boilerplate",
-  "license": "MIT",
   "dependencies": {
     "@loadable/component": "^5.12.0",
     "@loadable/server": "^5.12.0",
@@ -12,6 +7,7 @@
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2"
   },
+  "description": "React ecosystem boilerplate",
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -24,6 +20,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.1",
     "cypress": "^3.8.1",
     "enzyme": "^3.11.0",
@@ -56,7 +53,14 @@
     "terser-webpack-plugin": "^2.3.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
+    "webpack-dev-server": "^3.10.1",
+    "workbox-cacheable-response": "^5.0.0",
+    "workbox-core": "^5.0.0",
+    "workbox-expiration": "^5.0.0",
+    "workbox-precaching": "^5.0.0",
+    "workbox-routing": "^5.0.0",
+    "workbox-strategies": "^5.0.0",
+    "workbox-webpack-plugin": "^5.0.0"
   },
   "husky": {
     "hooks": {
@@ -64,6 +68,7 @@
       "pre-pushed": "lint-staged && yarn run flow && yarn run jest:related"
     }
   },
+  "license": "MIT",
   "lint-staged": {
     "*.{html,md}": [
       "prettier -c"
@@ -72,6 +77,8 @@
     "src/**/*.js": "eslint",
     "tools/**/*.js": "eslint"
   },
+  "name": "react-ecosystem-boilerplate",
+  "repository": "https://github.com/aukha-saukha/react-ecosystem-boilerplate",
   "scripts": {
     "build:dev": "yarn run build:dev:client && yarn run build:dev:server",
     "build:dev:client": "webpack --config tools/webpack/client.dev.config.js",
@@ -79,13 +86,19 @@
     "build:prod": "yarn run build:prod:client && yarn run build:prod:server",
     "build:prod:client": "webpack --config tools/webpack/client.prod.config.js",
     "build:prod:server": "webpack --config tools/webpack/server.prod.config.js",
-    "clean:dev": "yarn run clean:dev:css && yarn run clean:dev:js && yarn run clean:dev:stats",
+    "clean:dev": "yarn run clean:dev:css && yarn run clean:dev:img && yarn run clean:dev:js && yarn run clean:dev:pwa && yarn run clean:dev:robots && yarn run clean:dev:stats",
     "clean:dev:css": "rm -rf dist/dev/public/css/*.css && rm -rf dist/dev/public/css/*.css.map",
+    "clean:dev:img": "rm -rf dist/dev/public/img",
     "clean:dev:js": "rm -rf dist/dev/private/js/*.js && rm -rf dist/dev/private/js/*.js.map && rm -rf dist/dev/public/js/*.js && rm -rf dist/dev/public/js/*.js.map",
+    "clean:dev:pwa": "rm -rf dist/dev/public/manifest.json && rm -rf dist/dev/public/service-worker.js && rm -rf dist/dev/public/service-worker.js.map",
+    "clean:dev:robots": "rm -rf dist/dev/public/robots.txt",
     "clean:dev:stats": "rm -rf dist/dev/public/stats/*.json",
-    "clean:prod": "yarn run clean:prod:css && yarn run clean:prod:js && yarn run clean:prod:stats",
+    "clean:prod": "yarn run clean:prod:css && yarn run clean:prod:img && yarn run clean:prod:js && yarn run clean:prod:pwa && yarn run clean:prod:robots && yarn run clean:prod:stats",
     "clean:prod:css": "rm -rf dist/prod/public/css/*.css",
+    "clean:prod:img": "rm -rf dist/prod/public/img",
     "clean:prod:js": "rm -rf dist/prod/private/js/*.js && rm -rf dist/prod/private/js/*.js.LICENSE && rm -rf dist/prod/public/js/*.js && rm -rf dist/prod/public/js/*.js.LICENSE",
+    "clean:prod:pwa": "rm -rf dist/prod/public/manifest.json && rm -rf dist/prod/public/service-worker.js && rm -rf dist/prod/public/service-worker.js.map",
+    "clean:prod:robots": "rm -rf dist/prod/public/robots.txt",
     "clean:prod:stats": "rm -rf dist/prod/public/stats/*.json",
     "cy:open:dev": "cypress open --config-file test/cypress/config.json --env testEnvName=development",
     "cy:open:prod": "cypress open --config-file test/cypress/config.json --env testEnvName=production",
@@ -98,9 +111,10 @@
     "jest:related": "yarn jest:coverage --bail --changedSince=master",
     "jest:watch": "yarn jest --watch",
     "lint": "yarn run eslint && yarn run stylelint",
-    "stylelint": "stylelint src/**/*.scss",
     "start:dev": "yarn run clean:dev && yarn run build:dev && node dist/dev/private/js/server.js",
     "start:prod": "yarn run clean:prod && yarn run build:prod && node dist/prod/private/js/server.js",
+    "stylelint": "stylelint src/**/*.scss",
     "wds": "webpack-dev-server --config tools/webpack/dev-server.config.js"
-  }
+  },
+  "version": "1.0.9"
 }

@@ -21,7 +21,7 @@
 @mixin directional-property($property-name, $direction-name, $values) {
   // Check to make sure the property name is a string.
   @if (type-of($property-name) != string) {
-    @error 'Propery name needs to be a string.';
+    @error 'Property name needs to be a string.';
   }
 
   // Check to only allow certain direction names.

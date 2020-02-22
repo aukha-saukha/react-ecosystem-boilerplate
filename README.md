@@ -46,3 +46,24 @@ This production ready boilerplate has following feature:
   - Development: <http://localhost:5005/>
   - Production: <http://localhost:5014/>
   - Webpack dev server: <http://localhost:5023/>
+
+## Known issue
+
+- You may see `Warning: Expected server HTML to contain a matching <div> in <div>` in developer tools. Please see an open issue https://github.com/facebook/react/issues/15405 for more details. Unfortunately, this is a limitation of a react app using an app shell architecture.
+
+  This warning is not going to cause any performance/functional issue. If you still want to get rid of this warning, you can turn off offline support by removing the following code from `tools/workbox/service-worker.js` file:
+
+  ```javascript
+  const htmlCache = `html-cache-${Math.random()}`;
+
+  precacheAndRoute([{ url: '/app-shell.html', revision: htmlCache }], {
+    cleanUrls: false,
+  });
+
+  const handler = createHandlerBoundToURL('/app-shell.html');
+
+  const navigationRoute = new NavigationRoute(handler);
+  registerRoute(navigationRoute);
+  ```
+
+  Please note all other assets such as CSS, javaScript, images etc. will still cache successfully i.e. the assets will still go through the service worker.

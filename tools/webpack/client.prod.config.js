@@ -1,10 +1,17 @@
+const CopyPlugin = require('copy-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 // Common config options
-const { BROWSERS_LIST, EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
+const {
+  BROWSERS_LIST,
+  enhanceManifestFile,
+  EXTENSIONS_TO_RESOLVE,
+  PATHS,
+} = require('./common.config');
 
 // Custom plugin to create required directories if they don't exist already
 const CreateRequiredDirectoriesPlugin = require('./create-required-directories-plugin');
@@ -173,6 +180,19 @@ module.exports = {
 
   // Plugins
   plugins: [
+    // Copy images from static image directory to public distribution image directory
+    new CopyPlugin([
+      { from: `${PATHS.staticBase}/img`, to: PATHS.distProdPublicImage },
+      {
+        from: `${PATHS.staticBase}/manifest.json`,
+        to: PATHS.distProdPublic,
+        transform(content) {
+          return enhanceManifestFile(content);
+        },
+      },
+      { from: `${PATHS.staticBase}/robots.txt`, to: PATHS.distProdPublic },
+    ]),
+
     // Plugin to create required directories if they don't exist already.
     new CreateRequiredDirectoriesPlugin({
       dirs: [
@@ -181,6 +201,7 @@ module.exports = {
         PATHS.distProdPublic,
         PATHS.distProdPublicCSS,
         PATHS.distProdPublicJS,
+        PATHS.distProdPublicImage,
         PATHS.distProdPublicStats,
       ],
     }),
@@ -191,6 +212,17 @@ module.exports = {
 
       // Write assets to disk at given filename location
       writeToDisk: true,
+    }),
+
+    new WorkboxPlugin.InjectManifest({
+      // Don't cache-bust files since these files have unique URLs.
+      dontCacheBustURLsMatching: /\.(css|gif|html|jpg|jpeg|js|json|png|svg)$/,
+
+      // The path and name of the service worker file that will be created by the build process.
+      swDest: `${PATHS.distProdPublic}/service-worker.js`,
+
+      // The path to the source service worker file that can contain your own customized code.
+      swSrc: `${PATHS.workbox}/service-worker.js`,
     }),
   ],
 

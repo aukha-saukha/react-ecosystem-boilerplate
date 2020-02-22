@@ -1,8 +1,15 @@
+const CopyPlugin = require('copy-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 // Common config options
-const { BROWSERS_LIST, EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
+const {
+  BROWSERS_LIST,
+  enhanceManifestFile,
+  EXTENSIONS_TO_RESOLVE,
+  PATHS,
+} = require('./common.config');
 
 // Custom plugin to create required directories if they don't exist already
 const CreateRequiredDirectoriesPlugin = require('./create-required-directories-plugin');
@@ -110,7 +117,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['@babel/plugin-proposal-class-properties'],
+              plugins: ['@babel/plugin-proposal-class-properties', '@loadable/babel-plugin'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -165,6 +172,19 @@ module.exports = {
 
   // Plugins
   plugins: [
+    // Copy images from static image directory to public distribution image directory
+    new CopyPlugin([
+      { from: `${PATHS.staticBase}/img`, to: PATHS.distDevPublicImage },
+      {
+        from: `${PATHS.staticBase}/manifest.json`,
+        to: PATHS.distDevPublic,
+        transform(content) {
+          return enhanceManifestFile(content);
+        },
+      },
+      { from: `${PATHS.staticBase}/robots.txt`, to: PATHS.distDevPublic },
+    ]),
+
     // Plugin to create required directories if they don't exist already.
     new CreateRequiredDirectoriesPlugin({
       dirs: [
@@ -173,6 +193,7 @@ module.exports = {
         PATHS.distDevPublic,
         PATHS.distDevPublicCSS,
         PATHS.distDevPublicJS,
+        PATHS.distDevPublicImage,
         PATHS.distDevPublicStats,
       ],
     }),
@@ -185,9 +206,20 @@ module.exports = {
       writeToDisk: true,
     }),
 
-    // Extract CSS to an exernal file
+    // Extract CSS to an external file
     new MiniCssExtractPlugin({
       filename: '../css/[name].[contenthash].css',
+    }),
+
+    new WorkboxPlugin.InjectManifest({
+      // Don't cache-bust files since these files have unique URLs.
+      dontCacheBustURLsMatching: /\.(css|gif|html|jpg|jpeg|js|json|png|svg)$/,
+
+      // The path and name of the service worker file that will be created by the build process.
+      swDest: `${PATHS.distDevPublic}/service-worker.js`,
+
+      // The path to the source service worker file that can contain your own customized code.
+      swSrc: `${PATHS.workbox}/service-worker.js`,
     }),
   ],
 

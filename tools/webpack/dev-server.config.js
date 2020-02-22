@@ -1,8 +1,9 @@
+const CopyPlugin = require('copy-webpack-plugin');
 const fs = require('fs');
 const Webpack = require('webpack');
 
 // App config
-const { PORTS } = require('../../src/data/constants/app/config');
+const { APP_GENERAL_INFO, PORTS } = require('../../src/data/constants/app/config');
 
 // Common config options
 const { BROWSERS_LIST, EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
@@ -31,17 +32,28 @@ module.exports = {
         indexFile,
         `<!DOCTYPE html>
         <html>
-            <head>
+          <head>
             <meta charset="UTF-8" />
-            <title>React ecosystem boilerplate</title>
-            <meta name="description" content="React ecosystem boilerplate" />
+            <title>${APP_GENERAL_INFO.name}</title>
+            <meta name="description" content=${APP_GENERAL_INFO.description} />
+            <meta name="theme-color" content=${APP_GENERAL_INFO.themeColor}  />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            </head>
-            <body>
+
+            <link href="/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+            <link href="/img/favicon.png" rel="icon" type="image/png" />
+            <link href="/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
+            <link href="/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
+            <link href="/img/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
+            <link href="/img/favicon-192x192.png" rel="icon" sizes="192x192" type="image/png" />
+            <link href="/img/favicon-512x512.png" rel="icon" sizes="512x512" type="image/png" />
+
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway&display=swap" rel="stylesheet">
+          </head>
+          <body>
             <div id="root"></div>
             <script src='js/client.js'></script>
             <script src='js/vendor.js'></script>
-            </body>
+          </body>
         </html>`,
         function writeFileError(err) {
           if (err) {
@@ -57,7 +69,7 @@ module.exports = {
     // Base path for the content.
     contentBase: PATHS.distBaseWds,
 
-    // Enable histroy API fallback
+    // Enable history API fallback
     historyApiFallback: true,
 
     // Enable HMR on the server
@@ -80,6 +92,10 @@ module.exports = {
 
     // Display only errors to reduce the amount of output.
     stats: 'errors-only',
+
+    // Write files to disk (required for static assets such as images to work). The
+    // `copy-webpack-plugin` plugin needs this flag to be true for webpack-dev-server.
+    writeToDisk: true,
   },
 
   // Enable source map
@@ -220,11 +236,14 @@ module.exports = {
 
     // The url to the output directory resolved relative to the HTML page which
     // will be used to serve the bundled file(s).
-    publicPath: 'js/',
+    publicPath: '/js/',
   },
 
   // Plugins
   plugins: [
+    // Copy images from static image directory to public distribution image directory
+    new CopyPlugin([{ from: `${PATHS.staticBase}/img`, to: `${PATHS.distBaseWds}/img` }]),
+
     // Enable Hot Module Replacement
     new Webpack.HotModuleReplacementPlugin(),
   ],

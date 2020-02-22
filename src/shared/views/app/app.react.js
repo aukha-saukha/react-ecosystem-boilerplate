@@ -20,7 +20,7 @@ const App = () => {
     <ErrorBounday>
       <div className={appStyles['wrapper']}>
         <Header />
-        <section className={`padding-all-15 ${appStyles['page-specific-content']}`}>
+        <div className={`padding-all-15 ${appStyles['page-specific-content']}`}>
           <Switch>
             {routes.map(({ path, exact, component: C, ...rest }) => (
               <Route
@@ -35,7 +35,7 @@ const App = () => {
             ))}
             <Route component={NotFound} />
           </Switch>
-        </section>
+        </div>
         <Footer />
       </div>
     </ErrorBounday>

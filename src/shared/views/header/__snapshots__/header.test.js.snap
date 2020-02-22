@@ -9,7 +9,11 @@ exports[`Header component Renders correctly 1`] = `
       className="width-100 logo"
       to="/"
     >
-      REB
+      <img
+        alt="React ecosystem boilerplate"
+        src="img/logo.png"
+        srcSet="img/logo-1x.png 1x, img/logo-2x.png 2x"
+      />
     </NavLink>
   </h1>
 </header>
