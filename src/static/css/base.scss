@@ -20,3 +20,6 @@
 @import 'core/font-size';
 @import 'core/margin-padding';
 @import 'core/width';
+
+// Any app specific global custom styles
+@import 'custom/service-worker';

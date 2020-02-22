@@ -1,3 +1,8 @@
+// Background color
+$background-color: (
+  upgrade-app: map-get($colors, '0-0-0'),
+);
+
 // Border color
 $border-color: (
   header-bottom: map-get($colors, '225-225-225'),
@@ -22,6 +27,8 @@ $text-color: (
   link-hover: map-get($colors, '12-119-248'),
   link-visited: map-get($colors, '12-119-248'),
   logo: map-get($colors, '12-119-248'),
+  upgrade-app: map-get($colors, '225-225-225'),
+  upgrade-refresh-button: map-get($colors, '12-119-248'),
 );
 
 // Text decoration
@@ -32,6 +39,6 @@ $text-decoration: (
 
 // Font family
 $font-family: (
-  base: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-  title: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+  base: "'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+  title: "'Raleway', 'Helvetica Neue', Helvetica, Arial, sans-serif",
 );
