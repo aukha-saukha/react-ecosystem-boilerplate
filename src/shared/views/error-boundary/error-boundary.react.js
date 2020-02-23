@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import ErrorBoundaryStyle from './error-boundary.scss';
+
 import type {
   ErrorBoundaryPropsType,
   ErrorBoundaryStateType,
@@ -29,7 +31,11 @@ class ErrorBoundary extends React.Component<ErrorBoundaryPropsType, ErrorBoundar
     const { hasError } = this.state;
 
     if (hasError) {
-      return <h1>Something went wrong. Please refresh the page, and try again.</h1>;
+      return (
+        <h1 className={`align-perfectly-centered ${ErrorBoundaryStyle['error']}`}>
+          Something went wrong. Please refresh the page, and try again.
+        </h1>
+      );
     }
 
     return children;

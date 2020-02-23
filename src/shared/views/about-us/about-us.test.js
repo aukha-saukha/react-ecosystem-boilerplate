@@ -3,9 +3,15 @@ import React from 'react';
 
 import AboutUs from './about-us.react';
 
+import { LanguageProvider } from '../../../client/hooks/language';
+
 describe('AboutUs component', () => {
   it('Renders correctly', () => {
-    const wrapper = shallow(<AboutUs />);
+    const wrapper = shallow(
+      <LanguageProvider>
+        <AboutUs />
+      </LanguageProvider>
+    );
 
     expect(wrapper).toMatchSnapshot();
   });

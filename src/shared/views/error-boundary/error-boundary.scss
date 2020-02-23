@@ -1,0 +1,7 @@
+@import '../../../static/css/constants/colors';
+@import '../../../static/css/constants/variables';
+
+.error {
+  color: map-get($colors, '204-0-1');
+  height: 100vh;
+}

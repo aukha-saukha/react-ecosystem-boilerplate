@@ -3,7 +3,7 @@ const fs = require('fs');
 const Webpack = require('webpack');
 
 // App config
-const { APP_GENERAL_INFO, PORTS } = require('../../src/data/constants/app/config');
+const { APP_GENERAL_INFO, DEFAULT_LOCALE, PORTS } = require('../../src/data/constants/app/config');
 
 // Common config options
 const { BROWSERS_LIST, EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
@@ -31,7 +31,7 @@ module.exports = {
       fs.writeFile(
         indexFile,
         `<!DOCTYPE html>
-        <html>
+        <html lang="${DEFAULT_LOCALE}">
           <head>
             <meta charset="UTF-8" />
             <title>${APP_GENERAL_INFO.name}</title>
@@ -176,6 +176,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@babel/plugin-transform-runtime'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -201,7 +202,11 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['@babel/plugin-proposal-class-properties', 'react-hot-loader/babel'],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-transform-runtime',
+                'react-hot-loader/babel',
+              ],
               presets: [
                 [
                   '@babel/preset-env',

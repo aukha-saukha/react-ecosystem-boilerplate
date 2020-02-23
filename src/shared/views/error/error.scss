@@ -1,0 +1,6 @@
+@import '../../../static/css/constants/colors';
+@import '../../../static/css/constants/variables';
+
+.error {
+  color: map-get($text-color, error);
+}

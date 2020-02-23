@@ -22,7 +22,7 @@ function swallowConsoleError(codeToRun) {
   // Run the code that shows console error and log messages
   codeToRun();
 
-  // Reimplement the orginal console.error and console.log implementation
+  // Re-implement the original console.error and console.log implementation
   // eslint-disable-next-line no-console
   console.error = error;
   // eslint-disable-next-line no-console

@@ -19,3 +19,12 @@
     color: map-get($text-color, logo);
   }
 }
+
+.nav {
+  flex: 1 1 auto;
+}
+
+.nav-list-holder {
+  display: flex;
+  justify-content: flex-end;
+}

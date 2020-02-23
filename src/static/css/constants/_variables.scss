@@ -1,5 +1,6 @@
 // Background color
 $background-color: (
+  loading: map-get($colors, '12-119-248'),
   upgrade-app: map-get($colors, '0-0-0'),
 );
 
@@ -22,6 +23,7 @@ $breakpoints: (
 // Text color
 $text-color: (
   base: map-get($colors, '032-032-032'),
+  error: map-get($colors, '204-0-1'),
   link: map-get($colors, '12-119-248'),
   link-footer: map-get($colors, '30-30-30'),
   link-hover: map-get($colors, '12-119-248'),
