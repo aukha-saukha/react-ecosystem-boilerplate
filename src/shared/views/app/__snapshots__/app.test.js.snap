@@ -2,38 +2,40 @@
 
 exports[`App component Renders correctly 1`] = `
 <ErrorBoundary>
-  <div
-    className="wrapper"
-  >
-    <Header />
+  <LanguageProvider>
     <div
-      className="padding-all-15 page-specific-content"
+      className="wrapper"
     >
-      <Switch>
-        <Route
-          exact={true}
-          key="/about-us"
-          path="/about-us"
-          render={[Function]}
-        />
-        <Route
-          exact={true}
-          key="/contact-us"
-          path="/contact-us"
-          render={[Function]}
-        />
-        <Route
-          exact={true}
-          key="/"
-          path="/"
-          render={[Function]}
-        />
-        <Route
-          component={[Function]}
-        />
-      </Switch>
+      <Header />
+      <div
+        className="padding-all-15 page-specific-content"
+      >
+        <Switch>
+          <Route
+            exact={true}
+            key="/about-us"
+            path="/about-us"
+            render={[Function]}
+          />
+          <Route
+            exact={true}
+            key="/contact-us"
+            path="/contact-us"
+            render={[Function]}
+          />
+          <Route
+            exact={true}
+            key="/"
+            path="/"
+            render={[Function]}
+          />
+          <Route
+            component={[Function]}
+          />
+        </Switch>
+      </div>
+      <Footer />
     </div>
-    <Footer />
-  </div>
+  </LanguageProvider>
 </ErrorBoundary>
 `;

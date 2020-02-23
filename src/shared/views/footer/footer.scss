@@ -4,6 +4,7 @@
 .footer {
   border-top: 1px solid map-get($border-color, footer-top);
   grid-area: footer;
+  height: 5.4rem;
 }
 
 .footer li:not(:last-child) {
