@@ -102,6 +102,7 @@ module.exports = {
                     },
                   },
                 ],
+                '@babel/preset-flow',
               ],
             },
           },

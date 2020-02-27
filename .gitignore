@@ -3,6 +3,7 @@
 
 # Directories to ignore
 dist
+/logs
 node_modules
 test/cypress/videos
 test/jest/coverage

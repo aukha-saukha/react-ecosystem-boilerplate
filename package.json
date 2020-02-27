@@ -3,9 +3,12 @@
     "@loadable/component": "^5.12.0",
     "@loadable/server": "^5.12.0",
     "express": "^4.17.1",
+    "morgan": "^1.9.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "uuid": "^7.0.1",
+    "winston": "^3.2.1"
   },
   "description": "React ecosystem boilerplate",
   "devDependencies": {
@@ -35,7 +38,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
+    "eslint-plugin-react-hooks": "^2.4.0",
     "flow-bin": "^0.115.0",
     "husky": "^4.0.1",
     "identity-obj-proxy": "^3.0.0",
@@ -117,5 +120,5 @@
     "stylelint": "stylelint src/**/*.scss",
     "wds": "webpack-dev-server --config tools/webpack/dev-server.config.js"
   },
-  "version": "1.0.10"
+  "version": "1.0.11"
 }

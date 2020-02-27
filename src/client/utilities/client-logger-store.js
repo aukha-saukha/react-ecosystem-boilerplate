@@ -8,25 +8,27 @@ function openDB() {
     if (db) {
       resolve(db);
     } else {
-      const req = indexedDB.open('user', 1);
-      req.onerror = () => reject(req.error);
+      const req = indexedDB.open('logs', 1);
       req.onsuccess = () => {
         resolve((db = req.result));
       };
+      req.onerror = () => reject(req.error);
       req.onupgradeneeded = () => {
-        req.result.createObjectStore('profile');
-        req.result.createObjectStore('settings');
+        //   objectStoreNames;
+        req.result.createObjectStore('recurring', { keyPath: 'key', autoIncrement: true });
+        req.result.createObjectStore('unique');
       };
     }
   });
 }
+
 /**
  *
  * @param {*} key
  * @param {*} value
  * @return {Promise<void>}
  */
-export async function addProfileDataToUserStore(key, value) {
+export async function addUniqueLogToIndexedDB(key, value) {
   db = await openDB().catch((error) => {
     if (process.env.NODE_ENV !== 'production') {
       // The reason to disable console rule here is, because this error is to show developer problem
@@ -36,20 +38,19 @@ export async function addProfileDataToUserStore(key, value) {
     }
   });
   return new Promise((resolve, reject) => {
-    const txn = db.transaction('profile', 'readwrite');
+    const txn = db.transaction('unique', 'readwrite');
     txn.onabort = () => reject(txn.error);
-    txn.objectStore('profile').add(value, key);
     txn.oncomplete = () => resolve(value);
+    txn.objectStore('unique').put(value, key);
   });
 }
 
 /**
  *
- * @param {*} key
  * @param {*} value
  * @return {Promise<void>}
  */
-export async function addSettingToUserStore(key, value) {
+export async function addRecurringLogToIndexedDB(value) {
   db = await openDB().catch((error) => {
     if (process.env.NODE_ENV !== 'production') {
       // The reason to disable console rule here is, because this error is to show developer problem
@@ -59,10 +60,10 @@ export async function addSettingToUserStore(key, value) {
     }
   });
   return new Promise((resolve, reject) => {
-    const txn = db.transaction('settings', 'readwrite');
+    const txn = db.transaction('recurring', 'readwrite');
     txn.onabort = () => reject(txn.error);
-    txn.objectStore('settings').add(value, key);
     txn.oncomplete = () => resolve(value);
+    txn.objectStore('recurring').add(value);
   });
 }
 
@@ -70,13 +71,28 @@ export async function addSettingToUserStore(key, value) {
  * @param {string} key
  * @return {Promise<any>}
  */
-export async function deleteSettingFromUserStore(settingName) {
+export async function deleteRecurringLogs(lastLogKey) {
   db = await openDB();
   return new Promise((resolve, reject) => {
-    const txn = db.transaction('settings', 'readwrite');
-    const req = txn.objectStore('settings').delete(settingName);
+    const txn = db.transaction('recurring', 'readwrite');
+    const req = txn.objectStore('recurring').delete(IDBKeyRange.upperBound(lastLogKey));
     txn.onabort = () => reject(txn.error);
+    req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.result);
+  });
+}
+
+/**
+ * @param {string} key
+ * @return {Promise<any>}
+ */
+export async function getRecurringLogs() {
+  db = await openDB();
+  return new Promise((resolve, reject) => {
+    const txn = db.transaction('recurring', 'readonly');
+    const req = txn.objectStore('recurring').getAll();
+
+    txn.onabort = () => reject(txn.error);
     req.onsuccess = () => resolve(req.result);
   });
 }
@@ -85,51 +101,12 @@ export async function deleteSettingFromUserStore(settingName) {
  * @param {string} key
  * @return {Promise<any>}
  */
-export async function getProfileDataFromUserStore(key) {
+export async function getUniqueLog(key) {
   db = await openDB();
   return new Promise((resolve, reject) => {
-    const txn = db.transaction('profile', 'readonly');
-    const req = txn.objectStore('profile').get(key);
+    const txn = db.transaction('unique', 'readonly');
+    const req = txn.objectStore('unique').get(key);
     txn.onabort = () => reject(txn.error);
-    req.onerror = () => reject(req.result);
     req.onsuccess = () => resolve(req.result);
-  });
-}
-
-/**
- * @param {string} key
- * @return {Promise<any>}
- */
-export async function getSettingFromUserStore(settingName) {
-  db = await openDB();
-  return new Promise((resolve, reject) => {
-    const txn = db.transaction('settings', 'readonly');
-    const req = txn.objectStore('settings').get(settingName);
-    txn.onabort = () => reject(txn.error);
-    req.onerror = () => reject(req.result);
-    req.onsuccess = () => resolve(req.result);
-  });
-}
-
-/**
- *
- * @param {*} key
- * @param {*} value
- * @return {Promise<void>}
- */
-export async function updateSettingToUserStore(key, value) {
-  db = await openDB().catch((error) => {
-    if (process.env.NODE_ENV !== 'production') {
-      // The reason to disable console rule here is, because this error is to show developer problem
-      // with the code.
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-  });
-  return new Promise((resolve, reject) => {
-    const txn = db.transaction('settings', 'readwrite');
-    txn.onabort = () => reject(txn.error);
-    txn.objectStore('settings').put(value, key);
-    txn.oncomplete = () => resolve(value);
   });
 }
