@@ -80,7 +80,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['@loadable/babel-plugin'],
+              plugins: ['@babel/plugin-transform-runtime', '@loadable/babel-plugin'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -107,7 +107,10 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['@babel/plugin-proposal-class-properties'],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-transform-runtime',
+              ],
               presets: [
                 [
                   '@babel/preset-env',

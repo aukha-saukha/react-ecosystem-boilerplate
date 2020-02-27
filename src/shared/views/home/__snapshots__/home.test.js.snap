@@ -1,10 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home component Renders correctly 1`] = `
-<main
-  className="font-size-16"
-  data-test="main"
+<ContextProvider
+  value={
+    Array [
+      "en-us",
+      [Function],
+    ]
+  }
 >
-  Home page
-</main>
+  <Home />
+</ContextProvider>
 `;

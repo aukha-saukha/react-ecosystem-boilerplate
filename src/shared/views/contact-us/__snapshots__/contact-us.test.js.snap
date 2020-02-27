@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ContactUs component Renders correctly 1`] = `
-<main
-  className="font-size-16"
+<ContextProvider
+  value={
+    Array [
+      "en-us",
+      [Function],
+    ]
+  }
 >
-  Contact us page
-</main>
+  <ContactUs />
+</ContextProvider>
 `;

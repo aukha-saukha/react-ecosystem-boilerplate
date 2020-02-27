@@ -47,7 +47,7 @@ This production ready boilerplate has following feature:
   - Production: <http://localhost:5014/>
   - Webpack dev server: <http://localhost:5023/>
 
-## Known issue
+## Known issues
 
 - You may see `Warning: Expected server HTML to contain a matching <div> in <div>` in developer tools. Please see an open issue https://github.com/facebook/react/issues/15405 for more details. Unfortunately, this is a limitation of a react app using an app shell architecture.
 
@@ -67,3 +67,5 @@ This production ready boilerplate has following feature:
   ```
 
   Please note all other assets such as CSS, javaScript, images etc. will still cache successfully i.e. the assets will still go through the service worker.
+
+- The error message from ErrorBoundary component is in English language only. We rely on useTranslator hook to determine user's language/locale. Unfortunately, hooks can't be used in class component, and there is no equivalent of `componentDidCatch` and `getSnapshotBeforeUpdate` for hooks right now. Please take a look at https://reactjs.org/docs/hooks-faq.html#do-hooks-cover-all-use-cases-for-classes for more details.

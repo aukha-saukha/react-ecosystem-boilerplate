@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NotFound component Renders correctly 1`] = `
-<main
-  className="font-size-16"
+<ContextProvider
+  value={
+    Array [
+      "en-us",
+      [Function],
+    ]
+  }
 >
-  Four oh! Four
-</main>
+  <NotFound />
+</ContextProvider>
 `;

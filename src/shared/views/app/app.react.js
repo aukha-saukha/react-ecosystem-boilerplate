@@ -13,31 +13,34 @@ import routes from '../../routes';
 import ErrorBounday from '../error-boundary';
 import Footer from '../footer';
 import Header from '../header';
+import { LanguageProvider } from '../../../client/hooks/language';
 import NotFound from '../not-found';
 
 const App = () => {
   return (
     <ErrorBounday>
-      <div className={appStyles['wrapper']}>
-        <Header />
-        <div className={`padding-all-15 ${appStyles['page-specific-content']}`}>
-          <Switch>
-            {routes.map(({ path, exact, component: C, ...rest }) => (
-              <Route
-                exact={exact}
-                key={path}
-                path={path}
-                // The reason to disable jsx-props-no-spreading rule here is, because we don't know
-                // beforehand what props we are going to have.
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                render={(props) => <C {...props} {...rest} />}
-              />
-            ))}
-            <Route component={NotFound} />
-          </Switch>
+      <LanguageProvider>
+        <div className={appStyles['wrapper']}>
+          <Header />
+          <div className={`padding-all-15 ${appStyles['page-specific-content']}`}>
+            <Switch>
+              {routes.map(({ path, exact, component: C, ...rest }) => (
+                <Route
+                  exact={exact}
+                  key={path}
+                  path={path}
+                  // The reason to disable jsx-props-no-spreading rule here is, because we don't know
+                  // beforehand what props we are going to have.
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  render={(props) => <C {...props} {...rest} />}
+                />
+              ))}
+              <Route component={NotFound} />
+            </Switch>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </LanguageProvider>
     </ErrorBounday>
   );
 };

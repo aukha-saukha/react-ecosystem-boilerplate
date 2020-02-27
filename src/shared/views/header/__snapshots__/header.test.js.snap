@@ -1,20 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Header component Renders correctly 1`] = `
-<header
-  className="display-flex flex-items-align-center padding-all-15 header"
+<ContextProvider
+  value={
+    Array [
+      "en-us",
+      [Function],
+    ]
+  }
 >
-  <h1>
-    <NavLink
-      className="width-100 logo"
-      to="/"
-    >
-      <img
-        alt="React ecosystem boilerplate"
-        src="img/logo.png"
-        srcSet="img/logo-1x.png 1x, img/logo-2x.png 2x"
-      />
-    </NavLink>
-  </h1>
-</header>
+  <Header />
+</ContextProvider>
 `;

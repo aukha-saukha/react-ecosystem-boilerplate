@@ -1,0 +1,46 @@
+@import '../../../static/css/constants/colors';
+@import '../../../static/css/constants/variables';
+
+@keyframes loading-animation {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+    transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+    transform: scaleY(1);
+  }
+}
+
+.loading {
+  height: 5rem;
+  width: 5rem;
+}
+
+.rectangle {
+  animation: loading-animation 1.2s infinite ease-in-out;
+  background-color: map-get($background-color, loading);
+  display: inline-block;
+  height: 100%;
+  margin-right: 0.3rem;
+  width: 0.6rem;
+}
+
+.rectangle-2 {
+  animation-delay: -1.1s;
+}
+
+.rectangle-3 {
+  animation-delay: -1s;
+}
+
+.rectangle-4 {
+  animation-delay: -0.9s;
+}
+
+.rectangle-5 {
+  animation-delay: -0.8s;
+  margin-right: 0px;
+}

@@ -8,7 +8,12 @@ import React from 'react';
 import { renderToNodeStream } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
-import { APP_GENERAL_INFO, PORTS } from '../data/constants/app/config';
+import {
+  APP_GENERAL_INFO,
+  DEFAULT_LOCALE,
+  PORTS,
+  SUPPORTED_LOCALES,
+} from '../data/constants/app/config';
 
 import App from '../shared/views/app';
 
@@ -65,12 +70,23 @@ server.use(
   })
 );
 
+function normalizeLocale(locale) {
+  return locale ? locale.toLowerCase().replace('_', '-') : locale;
+}
+
 // Render to node stream
 server.get('*', (request: $Request, response: $Response) => {
+  // Quick and basic way to set language at the server. The w3c recommends 2 letters lang, but we
+  // currently support 4 letters for now.
+  const acceptedLanguages = request.headers['accept-language'];
+  const acceptedLanguagesSplitByComma = acceptedLanguages.split(',');
+  const normalizedLocale = normalizeLocale(acceptedLanguagesSplitByComma[0]);
+  const lang = SUPPORTED_LOCALES.includes(normalizedLocale) ? normalizedLocale : DEFAULT_LOCALE;
+
   response.set('content-type', 'text/html');
 
   response.write(`<!DOCTYPE html>
-    <html>
+    <html lang="${lang}">
       <head>
         <meta charset="UTF-8" />
         <title>${APP_GENERAL_INFO.name}</title>
