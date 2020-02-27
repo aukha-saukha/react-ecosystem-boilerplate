@@ -2,10 +2,27 @@
 
 import type { Node } from 'react';
 
+import type { BaseClientLogMessageType } from '../../../client/utilities/client-logger.type';
+
+export type ErrorBoundaryErrorLogIdType = 'eb';
+
+// Error boundary type
+export type ErrorBoundaryErrorLogMessageType = {|
+  ...BaseClientLogMessageType,
+  // Error name
+  en: string,
+  // Error stack
+  es: string,
+  // Log id
+  li: ErrorBoundaryErrorLogIdType,
+|};
+
+// Error boundary props type
 export type ErrorBoundaryPropsType = {|
   children: Node,
 |};
 
+// Error boundary state type
 export type ErrorBoundaryStateType = {|
   hasError: boolean,
 |};

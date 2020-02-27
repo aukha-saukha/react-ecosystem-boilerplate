@@ -7,6 +7,17 @@ function ChildWithError() {
   throw Error('Intentional error');
 }
 
+function mockAddRecurringLog() {
+  const original = require.requireActual('../../../client/utilities/client-logger');
+
+  return {
+    ...original,
+    addRecurringLog: jest.fn(),
+  };
+}
+
+jest.mock('../../../client/utilities/client-logger', () => mockAddRecurringLog());
+
 // There are console error and log messages which are typically useful, but can be suppressed
 // because we intentionally introduced an error.
 function swallowConsoleError(codeToRun) {

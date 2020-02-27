@@ -7,6 +7,11 @@ const APP_GENERAL_INFO = {
   themeColor: '#0c77f8',
 };
 
+const CLIENT_LOGGER = {
+  batchSize: 25,
+  url: '/_/csl',
+};
+
 const DEFAULT_LOCALE = 'en-us';
 
 const PORTS = {
@@ -19,6 +24,7 @@ const SUPPORTED_LOCALES = ['en-us', 'hi-in'];
 
 module.exports = {
   APP_GENERAL_INFO,
+  CLIENT_LOGGER,
   DEFAULT_LOCALE,
   PORTS,
   SUPPORTED_LOCALES,

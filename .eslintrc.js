@@ -6,14 +6,20 @@ module.exports = {
   },
   extends: ['airbnb', 'plugin:jest/recommended', 'prettier'],
   parser: 'babel-eslint',
-  plugins: ['jest', 'prettier'],
+  plugins: ['jest', 'prettier', 'react-hooks'],
   rules: {
     // Allow object dot notation.
     'dot-notation': 0,
     // Exception for dev dependencies
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    // Ignore unused vars rule for variables starting with an underscore.
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     // Prettier settings
     'prettier/prettier': ['error'],
+    // Checks hooks rules
+    'react-hooks/rules-of-hooks': 'error',
+    // Checks effect dependencies
+    'react-hooks/exhaustive-deps': 'warn',
     // Allow JSX in files with js extensions
     'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
     // Disallow arrow function or bind call as a prop for performance reasons

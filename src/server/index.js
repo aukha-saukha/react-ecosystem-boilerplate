@@ -3,19 +3,33 @@
 import { ChunkExtractor } from '@loadable/server';
 import express from 'express';
 import type { $Request, $Response } from 'express';
+import { createWriteStream } from 'fs';
+import morgan from 'morgan';
 import { resolve } from 'path';
 import React from 'react';
 import { renderToNodeStream } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
+import App from '../shared/views/app';
+
 import {
   APP_GENERAL_INFO,
+  CLIENT_LOGGER,
   DEFAULT_LOCALE,
   PORTS,
   SUPPORTED_LOCALES,
 } from '../data/constants/app/config';
+import { LOG_LEVEL } from '../data/constants/logs';
+import { logger } from './utilities/server-logger';
 
-import App from '../shared/views/app';
+import type {
+  ServerAllRequestHandlerLogMessageType,
+  ServerErrorLogMessageType,
+  ServerExceptionLogMessageType,
+  ServerRejectionLogMessageType,
+  ServerStartEventLogMessageType,
+  ServerWarningLogMessageType,
+} from './server.type';
 
 // Run time environment
 const runTimeEnvironment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
@@ -34,6 +48,12 @@ const loadableChunkExtractor = new ChunkExtractor({
   statsFile: loadableStatsFile,
   entrypoints: ['client'],
 });
+
+// Morgan log stream
+const morganLogStream = createWriteStream(
+  resolve(__dirname, '../../../../logs/server/morgan.log'),
+  { flags: 'a' }
+);
 
 // Port - first try to use port from process environment.
 // If it's not found or not correct type, use it from the app config file based on environment.
@@ -56,6 +76,12 @@ const server = express();
 // Disable x-powered-by header
 server.disable('x-powered-by');
 
+// Save logs using morgan
+server.use(morgan('combined', { stream: morganLogStream }));
+
+// Parse incoming requests with JSON payload.
+server.use(express.json());
+
 // Serve static files from the distPath directory
 server.use(
   express.static(distPathPublic, {
@@ -73,6 +99,70 @@ server.use(
 function normalizeLocale(locale) {
   return locale ? locale.toLowerCase().replace('_', '-') : locale;
 }
+
+// Client logger
+server.post(CLIENT_LOGGER['url'], (request: $Request, response: $Response) => {
+  const clientLogsArray =
+    request.body !== null &&
+    typeof request.body === 'object' &&
+    typeof request.body.cla !== 'undefined' &&
+    Array.isArray(request.body.cla)
+      ? request.body.cla
+      : [{}];
+
+  clientLogsArray.forEach((clientLog) => {
+    let logLevel;
+    const logMessage = {};
+
+    if (clientLog !== null && typeof clientLog === 'object') {
+      Object.entries(clientLog).forEach(([clientLogKey, clientLogValue]) => {
+        if (
+          clientLog !== null &&
+          typeof clientLog === 'object' &&
+          typeof clientLog['li'] !== 'string' &&
+          process.env.NODE_ENV !== 'production'
+        ) {
+          // The reason to disable no-console rule here is because we want to show this warning to the
+          // developer if log id is missing.
+          // eslint-disable-next-line no-console
+          console.warn('The log id is missing from the log.');
+        }
+
+        if (
+          clientLog !== null &&
+          typeof clientLog === 'object' &&
+          Object.keys(LOG_LEVEL).includes(clientLog['ll'])
+        ) {
+          logLevel = clientLog['ll'];
+        } else if (process.env.NODE_ENV !== 'production') {
+          // The reason to disable no-console rule here is because we want to show this warning to the
+          // developer if log level is missing.
+          // eslint-disable-next-line no-console
+          console.warn(
+            'Log level is either missing from the log or have a wrong type. The log will not be recorded.'
+          );
+        }
+
+        // Combine all except "ll" log entries to logMessage.
+        if (clientLogKey !== 'll') {
+          logMessage[clientLogKey] = clientLogValue;
+        }
+      });
+
+      if (typeof logLevel !== 'undefined') {
+        // The reason to disable flow here is because we're dynamically assigning log keys to
+        // logMessage. Flow engine is not able to check if required log keys are present or not
+        // since logMessage is initialized as an empty object. Since we're type checking in the
+        // client logger file, we should be okay. Flow can't correlate them as we're receiving the
+        // "client Logs Array" as part of request body.
+        // flow-disable-line
+        logger(logLevel, logMessage, 'client');
+      }
+    }
+  });
+
+  response.sendStatus(200);
+});
 
 // Render to node stream
 server.get('*', (request: $Request, response: $Response) => {
@@ -136,6 +226,8 @@ server.get('*', (request: $Request, response: $Response) => {
           let newServiceWorker;
 
           window.addEventListener('load', () => {
+            addEventListener('error', window.__error=function f(e){f.a=f.a||[];f.a.push({d: new Date().toUTCString(), e})});
+
             document.getElementById('refresh-app-button').addEventListener('click', function() {
               newServiceWorker.postMessage({ action: 'skipWaiting' });
             });
@@ -199,12 +291,79 @@ server.get('*', (request: $Request, response: $Response) => {
     );
     response.end();
   });
+
+  logger(
+    LOG_LEVEL['info'],
+    ({
+      li: 'sarh',
+      ri: request.headers['x-forwarded-for'] || request.connection.remoteAddress,
+      rm: request.method,
+      ua: request.get('User-Agent'),
+      url: request.url,
+    }: ServerAllRequestHandlerLogMessageType),
+    'server'
+  );
+});
+
+server.use((error: Error, request: $Request, _response: $Response) => {
+  logger(
+    LOG_LEVEL['error'],
+    ({
+      em: error.message,
+      es: error.stack,
+      li: 'se',
+      ri: request.headers['x-forwarded-for'] || request.connection.remoteAddress,
+      rm: request.method,
+    }: ServerErrorLogMessageType),
+    'server'
+  );
 });
 
 // Bind and listen for connections on the specified port.
 server.listen(port, () => {
-  // The reason to disable no-console rule here is because, we need "server is listening"
-  // confirmation message along with port information as console log.
-  // eslint-disable-next-line no-console
-  console.log(`Express server is listening on port ${port}`);
+  logger(
+    LOG_LEVEL['info'],
+    ({
+      li: 'sse',
+      sse: `Express server is listening on port ${port}`,
+    }: ServerStartEventLogMessageType),
+    'server'
+  );
 });
+
+process
+  .on('uncaughtException', (exception) => {
+    logger(
+      LOG_LEVEL['error'],
+      ({
+        exm: exception.message,
+        exs: exception.stack,
+        li: 'sue',
+      }: ServerExceptionLogMessageType),
+      'server'
+    );
+
+    process.exit(1);
+  })
+  .on('unhandledRejection', (reason, promise) => {
+    logger(
+      LOG_LEVEL['error'],
+      ({
+        li: 'sur',
+        urp: `Unhandled rejection at promise ${promise}`,
+        urr: reason.stack || reason,
+      }: ServerRejectionLogMessageType),
+      'server'
+    );
+  })
+  .on('warning', (warning) => {
+    logger(
+      LOG_LEVEL['warn'],
+      ({
+        li: 'sw',
+        wm: warning.message,
+        ws: warning.stack,
+      }: ServerWarningLogMessageType),
+      'server'
+    );
+  });

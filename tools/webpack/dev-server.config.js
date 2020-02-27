@@ -249,6 +249,11 @@ module.exports = {
     // Copy images from static image directory to public distribution image directory
     new CopyPlugin([{ from: `${PATHS.staticBase}/img`, to: `${PATHS.distBaseWds}/img` }]),
 
+    // Define plugin
+    new Webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('devServer'),
+    }),
+
     // Enable Hot Module Replacement
     new Webpack.HotModuleReplacementPlugin(),
   ],
