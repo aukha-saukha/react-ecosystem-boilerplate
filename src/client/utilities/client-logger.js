@@ -1,4 +1,15 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
+
+import { CLIENT_LOGGER, LOG_LEVEL } from '@constants/logs';
+
+import type { ClientUniqueLogMessageType } from '@views/app/app.type';
 
 import {
   addUniqueLogToIndexedDB,
@@ -8,10 +19,7 @@ import {
   getRecurringLogs,
 } from './client-logger-store';
 import { getProfileDataFromUserStore } from './user-store';
-import { CLIENT_LOGGER } from '../../data/constants/app/config';
-import { LOG_LEVEL } from '../../data/constants/logs';
 
-import type { ClientUniqueLogMessageType } from '../../shared/views/app/app.type';
 import type { ClientRecurringLogMessageType, PageErrorLogMessageType } from './client-logger.type';
 
 async function sendLogsToTheServer(currentRecurringLogCountPlusOne) {

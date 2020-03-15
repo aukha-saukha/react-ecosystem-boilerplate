@@ -1,18 +1,25 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
 import * as React from 'react';
 
-import Error from '../error';
-import Loading from '../loading';
+import { useLanguage } from '@hooks/language';
+import { useTranslator } from '@hooks/translator';
 
-import { useLanguage } from '../../../client/hooks/language';
-import useTranslator from '../../../client/hooks/translator';
+import { Error } from '@views/error';
+import { Loading } from '@views/loading';
 
 function NotFound(): React.Element<'main'> {
-  // Language hook
+  // Get user's current language
   const { language } = useLanguage();
 
-  // Translator hook
+  // Use translator hook to get component's @translations in user's preferred language
   const translatorHooksInput = {
     component: 'not-found',
     language,
@@ -37,4 +44,4 @@ function NotFound(): React.Element<'main'> {
   );
 }
 
-export default NotFound;
+export { NotFound };

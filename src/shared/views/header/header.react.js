@@ -1,21 +1,28 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { updateSettingToUserStore } from '@client-utilities/user-store';
+import { useLanguage } from '@hooks/language';
+import { useTranslator } from '@hooks/translator';
+
 import headerStyle from './header.scss';
 
 import { LOGO, TOP_NAV } from './header.schema';
 
-import { useLanguage } from '../../../client/hooks/language';
-import useTranslator from '../../../client/hooks/translator';
-import { updateSettingToUserStore } from '../../../client/utilities/user-store';
-
 function Header(): React.Element<'header'> {
-  // Language hook
+  // Get user's current language
   const { language, setLanguage } = useLanguage();
 
-  // Translator hook
+  // Use translator hook to get component's @translations in user's preferred language
   const headerTranslatorHooksInput = {
     component: 'header',
     language,
@@ -51,7 +58,7 @@ function Header(): React.Element<'header'> {
     } else {
       logoElement = <img alt={logoImage.alt} src={logoImage.src} />;
     }
-  } else {
+  } else if (typeof LOGO.name !== 'undefined') {
     logoElement = LOGO.name;
   }
 
@@ -107,4 +114,4 @@ function Header(): React.Element<'header'> {
   );
 }
 
-export default Header;
+export { Header };

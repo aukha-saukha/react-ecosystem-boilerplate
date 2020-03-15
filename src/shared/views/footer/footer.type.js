@@ -7,8 +7,8 @@
 
 // @flow strict
 
-import type { Node } from 'react';
-
-export type LanguageProviderParametersType = {|
-  children: Node,
+export type FooterItemType = {|
+  dataTest: string,
+  linkToLocation: string,
+  translationKey: string,
 |};

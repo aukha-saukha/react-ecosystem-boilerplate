@@ -29,6 +29,16 @@ include_warnings=true
 module.file_ext=.scss
 module.file_ext=.js
 module.file_ext=.json
+module.ignore_non_literal_requires=true
+module.name_mapper='^@client-utilities' -> '<PROJECT_ROOT>/src/client/utilities'
+module.name_mapper='^@constants' -> '<PROJECT_ROOT>/src/data/constants'
+module.name_mapper='^@hooks' -> '<PROJECT_ROOT>/src/client/hooks'
+module.name_mapper='^@routes' -> '<PROJECT_ROOT>/src/shared/routes'
+module.name_mapper='^@server-utilities' -> '<PROJECT_ROOT>/src/server/utilities'
+module.name_mapper='^@shared-utilities' -> '<PROJECT_ROOT>/src/shared/utilities'
+module.name_mapper='^@static' -> '<PROJECT_ROOT>/src/static'
+module.name_mapper='^@translations' -> '<PROJECT_ROOT>/src/data/translations'
+module.name_mapper='^@views' -> '<PROJECT_ROOT>/src/shared/views'
 suppress_comment= \\(.\\|\n\\)*\\flow-disable-line
 
 [strict]

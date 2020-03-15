@@ -1,14 +1,21 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 
-import ErrorBoundary from './error-boundary.react';
+import { ErrorBoundary } from './error-boundary.react';
 
 function ChildWithError() {
   throw Error('Intentional error');
 }
 
 function mockAddRecurringLog() {
-  const original = require.requireActual('../../../client/utilities/client-logger');
+  const original = require.requireActual('@client-utilities/client-logger');
 
   return {
     ...original,
@@ -16,7 +23,7 @@ function mockAddRecurringLog() {
   };
 }
 
-jest.mock('../../../client/utilities/client-logger', () => mockAddRecurringLog());
+jest.mock('@client-utilities/client-logger', () => mockAddRecurringLog());
 
 // There are console error and log messages which are typically useful, but can be suppressed
 // because we intentionally introduced an error.

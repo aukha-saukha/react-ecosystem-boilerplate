@@ -1,12 +1,20 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 const CopyPlugin = require('copy-webpack-plugin');
 const fs = require('fs');
 const Webpack = require('webpack');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 // App config
 const { APP_GENERAL_INFO, DEFAULT_LOCALE, PORTS } = require('../../src/data/constants/app/config');
 
 // Common config options
-const { BROWSERS_LIST, EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
+const { BROWSERS_LIST, PATHS, WEBPACK_RESOLVE } = require('./common.config');
 
 module.exports = {
   // Base directory for resolving entry points and loaders from configuration.
@@ -143,7 +151,7 @@ module.exports = {
         ],
       },
 
-      // CSS, SASS loaders. Only .scss extension is allowed.
+      // CSS, SASS loaders.
       {
         exclude: [/node_modules/, `${PATHS.src}/static/css`],
         test: /\.(c|sc)ss$/,
@@ -187,6 +195,7 @@ module.exports = {
                     },
                   },
                 ],
+                '@babel/preset-flow',
               ],
             },
           },
@@ -249,6 +258,9 @@ module.exports = {
     // Copy images from static image directory to public distribution image directory
     new CopyPlugin([{ from: `${PATHS.staticBase}/img`, to: `${PATHS.distBaseWds}/img` }]),
 
+    // Create a CLI dashboard
+    new DashboardPlugin(),
+
     // Define plugin
     new Webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('devServer'),
@@ -258,12 +270,9 @@ module.exports = {
     new Webpack.HotModuleReplacementPlugin(),
   ],
 
-  // Resolve imports without extensions
+  // Resolve
   resolve: {
-    alias: {
-      'react-dom': '@hot-loader/react-dom',
-    },
-
-    extensions: EXTENSIONS_TO_RESOLVE,
+    ...WEBPACK_RESOLVE,
+    alias: { ...WEBPACK_RESOLVE.alias, 'react-dom': '@hot-loader/react-dom' },
   },
 };

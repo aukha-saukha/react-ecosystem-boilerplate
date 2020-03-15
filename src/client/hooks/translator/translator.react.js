@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
 import * as React from 'react';
@@ -46,9 +53,6 @@ const useTranslator = ({ component, language }: UseTranslatorParametersType) => 
       dispatch({ type: 'FETCH_INIT' });
 
       try {
-        // The reason to disable flow here is because if we want to have a dynamic import, the
-        // import path can't be a string.
-        // flow-disable-line
         const result = await import(`../../../data/translations/${component}/${language}`);
 
         if (!didCancel) {
@@ -79,4 +83,4 @@ const useTranslator = ({ component, language }: UseTranslatorParametersType) => 
   return state;
 };
 
-export default useTranslator;
+export { useTranslator };

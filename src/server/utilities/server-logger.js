@@ -1,10 +1,17 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
 import { basename, resolve } from 'path';
 import { addColors, createLogger, format, transports } from 'winston';
 
-import { SERVER_LOG_ENABLED_IDS } from '../../data/constants/logs';
-import date from '../../shared/utilities/date';
+import { SERVER_LOG_ENABLED_IDS } from '@constants/logs';
+import { getCurrentUtcTimestamp } from '@shared-utilities/date';
 
 import type { LogIdType, LogLevelType, LogMessageType, LogSourceType } from './server-logger.type';
 
@@ -29,205 +36,131 @@ const logLevels = {
   },
 };
 
+// - This timestamp in console transports are not in UTC, but in the developer's time zone. Since
+//   console logs are useful for developers during debugging so making it use the developer's
+//   timezone.
+// - Please don't change the format options sequence in combine.
+const consoleTransportBaseObject = {
+  format: combine(
+    label({ label: basename(process.mainModule.filename) }),
+    timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss',
+    }),
+    prettyPrint(),
+    colorize({ all: true })
+  ),
+};
+
+// - The timestamps in file transport logs are in UTC.
+// - Please don't change the format options sequence in combine.
+const fileTransportBaseObject = {
+  format: combine(
+    label({ label: basename(process.mainModule.filename) }),
+    timestamp({
+      format: getCurrentUtcTimestamp(),
+    }),
+    prettyPrint(),
+    colorize({ all: true })
+  ),
+  maxsize: 5242880,
+  maxFiles: 10,
+};
+
 // Add colors for the custom levels
 addColors(logLevels.colors);
 
-// - This timestamp in console transport is not in UTC, but in the developer's time zone. The
-//   timestamps in other transport logs are in UTC, but console logs are useful for developers
-//   during debugging so making it use the developer's timezone.
-// - Please don't change the format options sequence in combine.
-// - Unfortunately, a helper function that creates a logger based on log level (to reduce duplicate
-//   code) results in various issues, especially logs entries in multiple files. It's not ideal, but
-//   having different createLogger is the way to go.
+// Unfortunately, a helper function that creates a logger based on log level (to reduce duplicate
+// code) results in various issues, especially logs entries in multiple files. It's not ideal, but
+// having different createLogger is the way to go.
 
 // Client debug logger
 const clientDebugLogger = createLogger({
   level: 'debug',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/client/debug.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  clientDebugLogger.add(new transports.Console(consoleTransportBaseObject));
+}
 
 // Client error logger
 const clientErrorLogger = createLogger({
   level: 'error',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/client/error.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  clientErrorLogger.add(new transports.Console(consoleTransportBaseObject));
+}
 
 // Client info logger
 const clientInfoLogger = createLogger({
   level: 'info',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/client/info.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  clientInfoLogger.add(new transports.Console(consoleTransportBaseObject));
+}
 
 // Client warning logger
 const clientWarningLogger = createLogger({
   level: 'warning',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/client/warning.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  clientWarningLogger.add(new transports.Console(consoleTransportBaseObject));
+}
 
 // Server debug logger
 const serverDebugLogger = createLogger({
   level: 'debug',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/server/debug.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  serverDebugLogger.add(new transports.Console(consoleTransportBaseObject));
+}
 
 // Server error logger
 const serverErrorLogger = createLogger({
   level: 'error',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/server/error.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
@@ -236,69 +169,41 @@ serverErrorLogger.exceptions.handle(
   new transports.File({ filename: `${logsDirectory}/server/exceptions.log` })
 );
 
+if (process.env.NODE_ENV !== 'production') {
+  serverErrorLogger.add(new transports.Console(consoleTransportBaseObject));
+}
+
 // Server info logger
 const serverInfoLogger = createLogger({
   level: 'info',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/server/info.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  serverInfoLogger.add(new transports.Console(consoleTransportBaseObject));
+}
 
 // Server warning logger
 const serverWarningLogger = createLogger({
   level: 'warning',
   levels: logLevels.names,
   transports: [
-    new transports.Console({
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-    }),
-
     new transports.File({
+      ...fileTransportBaseObject,
       filename: `${logsDirectory}/server/warning.log`,
-      format: combine(
-        label({ label: basename(process.mainModule.filename) }),
-        timestamp({
-          format: date.getCurrentUtcTimestamp(),
-        }),
-        prettyPrint(),
-        colorize({ all: true })
-      ),
-      maxsize: 5242880,
-      maxFiles: 10,
     }),
   ],
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  serverWarningLogger.add(new transports.Console(consoleTransportBaseObject));
+}
 
 function logger(logLevel: LogLevelType, logMessage: LogMessageType, logSource: LogSourceType) {
   if (process.env.NODE_ENV !== 'production') {
@@ -346,7 +251,6 @@ function logger(logLevel: LogLevelType, logMessage: LogMessageType, logSource: L
     switch (logLevel) {
       case 'debug':
         clientDebugLogger.log(logLevel, logMessage);
-
         break;
 
       case 'error':
@@ -382,7 +286,6 @@ function logger(logLevel: LogLevelType, logMessage: LogMessageType, logSource: L
     switch (logLevel) {
       case 'debug':
         serverDebugLogger.log(logLevel, logMessage);
-
         break;
 
       case 'error':
@@ -410,7 +313,4 @@ function logger(logLevel: LogLevelType, logMessage: LogMessageType, logSource: L
   }
 }
 
-// The reason to disable 'import/prefer-default-export' because we're moving away from default
-// export. We want to have named imports.
-// eslint-disable-next-line import/prefer-default-export
 export { logger };

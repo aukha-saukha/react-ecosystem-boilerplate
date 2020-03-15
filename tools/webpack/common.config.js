@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 const { resolve } = require('path');
 
 const { APP_GENERAL_INFO } = require('../../src/data/constants/app/config');
@@ -28,9 +35,6 @@ const distProdPrivate = `${distBaseProd}/private`;
 
 // Distribution public directory for production environment
 const distProdPublic = `${distBaseProd}/public`;
-
-// Extensions to resolve
-const EXTENSIONS_TO_RESOLVE = ['.js', '.json'];
 
 // Static base directory
 const staticBase = resolve(__dirname, '../../src/static');
@@ -74,9 +78,28 @@ function enhanceManifestFile(buffer) {
   return JSON.stringify(manifest, null, 2);
 }
 
+// Webpack resolve
+const WEBPACK_RESOLVE = {
+  // Aliases
+  alias: {
+    '@client-utilities': `${PATHS.src}/client/utilities`,
+    '@constants': `${PATHS.src}/data/constants`,
+    '@hooks': `${PATHS.src}/client/hooks`,
+    '@routes': `${PATHS.src}/shared/routes`,
+    '@server-utilities': `${PATHS.src}/server/utilities`,
+    '@shared-utilities': `${PATHS.src}/shared/utilities`,
+    '@static': `${PATHS.src}/static`,
+    '@translations': `${PATHS.src}/data/translations`,
+    '@views': `${PATHS.src}/shared/views`,
+  },
+
+  // Import the following extension type of files without extension in the name of import path
+  extensions: ['.js', '.json'],
+};
+
 module.exports = {
   BROWSERS_LIST,
   enhanceManifestFile,
-  EXTENSIONS_TO_RESOLVE,
   PATHS,
+  WEBPACK_RESOLVE,
 };

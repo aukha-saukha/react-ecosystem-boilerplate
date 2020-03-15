@@ -1,14 +1,21 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import { /* mount, */ shallow } from 'enzyme';
 import React from 'react';
 // import { MemoryRouter } from 'react-router-dom';
 
 // import { FOOTER_LINKS } from './footer.schema';
 
-import Footer from './footer.react';
-import { LanguageProvider } from '../../../client/hooks/language';
+import { LanguageProvider } from '@hooks/language';
+import { Footer } from './footer.react';
 
 function mockUserStore() {
-  const original = require.requireActual('../../../client/utilities/user-store');
+  const original = require.requireActual('@client-utilities/user-store');
 
   return {
     ...original,
@@ -16,7 +23,7 @@ function mockUserStore() {
   };
 }
 
-jest.mock('../../../client/utilities/user-store', () => mockUserStore());
+jest.mock('@client-utilities/user-store', () => mockUserStore());
 
 describe('Footer component', () => {
   // Disabling this test for now because in Enzyme, useEffect is not called in shallow render.
