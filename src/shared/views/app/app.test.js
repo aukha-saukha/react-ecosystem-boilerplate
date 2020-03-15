@@ -1,12 +1,20 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import { /* mount, */ shallow } from 'enzyme';
 import React from 'react';
 // import { MemoryRouter } from 'react-router-dom';
 
-import App from './app.react';
-// import NotFound from '../not-found';
+// import NotFound from '@views/not-found';
+
+import { appToExport as App } from './app.react';
 
 function mockClientSideLogger() {
-  const original = require.requireActual('../../../client/utilities/client-logger');
+  const original = require.requireActual('@client-utilities/client-logger');
 
   return {
     ...original,
@@ -30,7 +38,7 @@ function mockUseLocationHook() {
 }
 
 function mockUserStore() {
-  const original = require.requireActual('../../../client/utilities/user-store');
+  const original = require.requireActual('@client-utilities/user-store');
 
   return {
     ...original,
@@ -39,8 +47,8 @@ function mockUserStore() {
   };
 }
 
-jest.mock('../../../client/utilities/client-logger', () => mockClientSideLogger());
-jest.mock('../../../client/utilities/user-store', () => mockUserStore());
+jest.mock('@client-utilities/client-logger', () => mockClientSideLogger());
+jest.mock('@client-utilities/user-store', () => mockUserStore());
 jest.mock('react-router-dom', () => mockUseLocationHook());
 
 describe('App component', () => {

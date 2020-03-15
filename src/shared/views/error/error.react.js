@@ -1,19 +1,26 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
 import * as React from 'react';
 
-import { useLanguage } from '../../../client/hooks/language';
-import useTranslator from '../../../client/hooks/translator';
+import { useLanguage } from '@hooks/language';
+import { useTranslator } from '@hooks/translator';
 
 import errorStyle from './error.scss';
 
 import type { ErrorPropsType } from './error.type';
 
 function Error({ message }: ErrorPropsType): React.Element<'div'> {
-  // Language hook
+  // Get user's current language
   const { language } = useLanguage();
 
-  // Translator hook
+  // Use translator hook to get component's @translations in user's preferred language
   const translatorHooksInput = {
     component: 'error',
     language,
@@ -35,4 +42,4 @@ function Error({ message }: ErrorPropsType): React.Element<'div'> {
   return <div className={errorStyle['error']}>{message}</div>;
 }
 
-export default Error;
+export { Error };

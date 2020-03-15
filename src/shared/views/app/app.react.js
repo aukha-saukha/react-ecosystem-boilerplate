@@ -1,4 +1,11 @@
-// @flow strict-local
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// @flow strict
 
 // Please keep react-hot-loader import before React (recommended by react-hot-loader team).
 import { hot } from 'react-hot-loader/root';
@@ -6,23 +13,25 @@ import React from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import '../../../static/css/base.scss';
-import appStyles from './app.scss';
+import '@static/css/base.scss';
 
-import ErrorBounday from '../error-boundary';
-import Footer from '../footer';
-import Header from '../header';
-import { LanguageProvider } from '../../../client/hooks/language';
-import NotFound from '../not-found';
+import { LanguageProvider } from '@hooks/language';
 
-import { addRecurringLog, addUniqueLog } from '../../../client/utilities/client-logger';
+import { ErrorBoundary } from '@views/error-boundary';
+import { Footer } from '@views/footer';
+import { Header } from '@views/header';
+import { NotFound } from '@views/not-found';
+
+import { addRecurringLog, addUniqueLog } from '@client-utilities/client-logger';
 import {
   addProfileDataToUserStore,
   getProfileDataFromUserStore,
-} from '../../../client/utilities/user-store';
-import { LOG_LEVEL } from '../../../data/constants/logs';
-import { getCurrentUtcTimestamp } from '../../utilities/date';
-import routes from '../../routes';
+} from '@client-utilities/user-store';
+import { LOG_LEVEL } from '@constants/logs';
+import { getCurrentUtcTimestamp } from '@shared-utilities/date';
+import { routes } from '@routes';
+
+import appStyles from './app.scss';
 
 import type {
   ClientUniqueLogMessageType,
@@ -125,7 +134,7 @@ const App = () => {
 
   return (
     <React.StrictMode>
-      <ErrorBounday>
+      <ErrorBoundary>
         <LanguageProvider>
           <div className={appStyles['wrapper']}>
             <Header />
@@ -148,7 +157,7 @@ const App = () => {
             <Footer />
           </div>
         </LanguageProvider>
-      </ErrorBounday>
+      </ErrorBoundary>
     </React.StrictMode>
   );
 };
@@ -156,4 +165,4 @@ const App = () => {
 // flow-disable-line
 const appToExport = module.hot ? hot(App) : App;
 
-export default appToExport;
+export { appToExport };

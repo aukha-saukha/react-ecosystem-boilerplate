@@ -1,11 +1,18 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
+import type { LogLevelType } from '@server-utilities/server-logger.type';
 import type {
   ReactRouterPathLogMessageType,
   ReactRouterInvalidPathLogMessageType,
-} from '../../shared/views/app/app.type';
-import type { ErrorBoundaryErrorLogMessageType } from '../../shared/views/error-boundary/error-boundary.type';
-import type { LogLevelType } from '../../server/utilities/server-logger.type';
+} from '@views/app/app.type';
+import type { ErrorBoundaryErrorLogMessageType } from '@views/error-boundary/error-boundary.type';
 
 type PageErrorLogId = 'pe';
 
@@ -14,7 +21,7 @@ export type BaseClientLogMessageType = {|
   // Log level
   ll: LogLevelType,
   // Timestamp
-  ts: Date,
+  ts: string,
 |};
 
 // Page error log message ype

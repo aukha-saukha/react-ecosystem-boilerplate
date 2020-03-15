@@ -1,7 +1,17 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 const fs = require('fs');
+const { DuplicatesPlugin } = require('inspectpack/plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { WebpackBundleSizeAnalyzerPlugin } = require('webpack-bundle-size-analyzer');
 
 // Common config options
-const { EXTENSIONS_TO_RESOLVE, PATHS } = require('./common.config');
+const { PATHS, WEBPACK_RESOLVE } = require('./common.config');
 
 // Custom plugin to create required directories if they don't exist already
 const CreateRequiredDirectoriesPlugin = require('./create-required-directories-plugin');
@@ -32,7 +42,7 @@ module.exports = {
   // Loaders
   module: {
     rules: [
-      // CSS, SASS loaders. Only .scss extension is allowed.
+      // CSS, SASS loaders.
       {
         exclude: /node_modules/,
         test: /\.(c|sc)ss$/,
@@ -137,16 +147,31 @@ module.exports = {
 
   // Plugins
   plugins: [
+    // Analyze the generated bundles by webpack using a JSON/HTML file
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      generateStatsFile: true,
+      openAnalyzer: false,
+      reportFilename: `${PATHS.distDevPublicStats}/webpack-server-dev-stats.html`,
+      statsFilename: `${PATHS.distDevPublicStats}/webpack-server-dev-stats.json`,
+    }),
+
     // Plugin to create required directories if they don't exist already.
     new CreateRequiredDirectoriesPlugin({
       dirs: [PATHS.distBase, PATHS.distBaseDev, PATHS.distDevPrivate, PATHS.distDevPrivateJS],
     }),
+
+    // Identify duplicate code in webpack bundles
+    new DuplicatesPlugin({
+      verbose: true,
+    }),
+
+    // Analyze the generated bundles by webpack using a text file
+    new WebpackBundleSizeAnalyzerPlugin(`${PATHS.distDevPublicStats}/webpack-server-dev-stats.txt`),
   ],
 
-  // Resolve imports without extensions
-  resolve: {
-    extensions: EXTENSIONS_TO_RESOLVE,
-  },
+  // Resolve
+  resolve: WEBPACK_RESOLVE,
 
   // Compile for usage in a node.js-like environment
   target: 'node',

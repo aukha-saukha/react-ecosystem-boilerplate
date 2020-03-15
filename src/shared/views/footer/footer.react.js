@@ -1,20 +1,27 @@
-// @flow strict-local
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// @flow strict
 
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
+
+import { useLanguage } from '@hooks/language';
+import { useTranslator } from '@hooks/translator';
 
 import footerStyle from './footer.scss';
 
 import { FOOTER_LINKS } from './footer.schema';
 
-import { useLanguage } from '../../../client/hooks/language';
-import useTranslator from '../../../client/hooks/translator';
-
 function Footer(): React.Element<'footer'> {
-  // Language hook
+  // Get user's current language
   const { language } = useLanguage();
 
-  // Translator hook
+  // Use translator hook to get component's translations in user's preferred language
   const footerTranslatorHooksInput = {
     component: 'footer',
     language,
@@ -51,4 +58,4 @@ function Footer(): React.Element<'footer'> {
   );
 }
 
-export default Footer;
+export { Footer };

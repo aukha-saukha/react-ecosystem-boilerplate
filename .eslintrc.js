@@ -12,6 +12,10 @@ module.exports = {
     'dot-notation': 0,
     // Exception for dev dependencies
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    // Prohibit default exports
+    'import/no-default-export': ['error'],
+    // Turn off default export rule, because we enforce named export
+    'import/prefer-default-export': 0,
     // Ignore unused vars rule for variables starting with an underscore.
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     // Prettier settings
@@ -28,5 +32,13 @@ module.exports = {
     'react/prop-types': 0,
     // Enforce state initialization style to be with a class property.
     'react/state-in-constructor': [1, 'never'],
+  },
+  settings: {
+    'import/resolver': {
+      node: {},
+      webpack: {
+        config: 'tools/webpack/client.prod.config.js',
+      },
+    },
   },
 };

@@ -1,10 +1,16 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
 import * as React from 'react';
 
-import { DEFAULT_LOCALE } from '../../../data/constants/app/config';
-
-import getUserLocale from '../../utilities/user-locale';
+import { getUserLocale } from '@client-utilities/user-locale';
+import { DEFAULT_LOCALE } from '@constants/app/config';
 
 import type { LanguageProviderParametersType } from './language.type';
 

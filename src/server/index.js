@@ -1,4 +1,11 @@
-// @flow strict-local
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// @flow strict
 
 import { ChunkExtractor } from '@loadable/server';
 import express from 'express';
@@ -10,16 +17,10 @@ import React from 'react';
 import { renderToNodeStream } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
-import App from '../shared/views/app';
+import { App } from '@views/app';
 
-import {
-  APP_GENERAL_INFO,
-  CLIENT_LOGGER,
-  DEFAULT_LOCALE,
-  PORTS,
-  SUPPORTED_LOCALES,
-} from '../data/constants/app/config';
-import { LOG_LEVEL } from '../data/constants/logs';
+import { APP_GENERAL_INFO, DEFAULT_LOCALE, PORTS, SUPPORTED_LOCALES } from '@constants/app/config';
+import { CLIENT_LOGGER, LOG_LEVEL } from '@constants/logs';
 import { logger } from './utilities/server-logger';
 
 import type {
@@ -358,7 +359,7 @@ process
   })
   .on('warning', (warning) => {
     logger(
-      LOG_LEVEL['warn'],
+      LOG_LEVEL['warning'],
       ({
         li: 'sw',
         wm: warning.message,

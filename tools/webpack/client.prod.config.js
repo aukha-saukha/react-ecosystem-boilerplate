@@ -1,17 +1,22 @@
-const CopyPlugin = require('copy-webpack-plugin');
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 const LoadablePlugin = require('@loadable/webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const { DuplicatesPlugin } = require('inspectpack/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { WebpackBundleSizeAnalyzerPlugin } = require('webpack-bundle-size-analyzer');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 // Common config options
-const {
-  BROWSERS_LIST,
-  enhanceManifestFile,
-  EXTENSIONS_TO_RESOLVE,
-  PATHS,
-} = require('./common.config');
+const { BROWSERS_LIST, enhanceManifestFile, PATHS, WEBPACK_RESOLVE } = require('./common.config');
 
 // Custom plugin to create required directories if they don't exist already
 const CreateRequiredDirectoriesPlugin = require('./create-required-directories-plugin');
@@ -49,7 +54,7 @@ module.exports = {
         ],
       },
 
-      // CSS, SASS loaders. Only .scss extension is allowed.
+      // CSS, SASS loaders.
       {
         exclude: [/node_modules/, `${PATHS.src}/static/css`],
         test: /\.(c|sc)ss$/,
@@ -111,6 +116,7 @@ module.exports = {
               plugins: [
                 '@babel/plugin-proposal-class-properties',
                 '@babel/plugin-transform-runtime',
+                '@loadable/babel-plugin',
               ],
               presets: [
                 [
@@ -184,6 +190,16 @@ module.exports = {
 
   // Plugins
   plugins: [
+    // Analyze the generated bundles by webpack using a JSON/HTML file
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      defaultSizes: 'gzip',
+      generateStatsFile: true,
+      openAnalyzer: false,
+      reportFilename: `${PATHS.distProdPublicStats}/webpack-client-prod-stats.html`,
+      statsFilename: `${PATHS.distProdPublicStats}/webpack-client-prod-stats.json`,
+    }),
+
     // Copy images from static image directory to public distribution image directory
     new CopyPlugin([
       { from: `${PATHS.staticBase}/img`, to: PATHS.distProdPublicImage },
@@ -210,6 +226,12 @@ module.exports = {
       ],
     }),
 
+    // Identify duplicate code in webpack bundles
+    new DuplicatesPlugin({
+      verbose: true,
+    }),
+
+    // Plugin to generate stats that can be consumed by '@loadable/server'
     new LoadablePlugin({
       // Manifest file name
       filename: '../stats/loadable-stats.json',
@@ -217,6 +239,11 @@ module.exports = {
       // Write assets to disk at given filename location
       writeToDisk: true,
     }),
+
+    // Analyze the generated bundles by webpack using a text format
+    new WebpackBundleSizeAnalyzerPlugin(
+      `${PATHS.distProdPublicStats}/webpack-client-prod-stats.txt`
+    ),
 
     new WorkboxPlugin.InjectManifest({
       // Don't cache-bust files since these files have unique URLs.
@@ -230,8 +257,6 @@ module.exports = {
     }),
   ],
 
-  // Resolve imports without extensions
-  resolve: {
-    extensions: EXTENSIONS_TO_RESOLVE,
-  },
+  // Resolve
+  resolve: WEBPACK_RESOLVE,
 };

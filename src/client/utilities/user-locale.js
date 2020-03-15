@@ -1,6 +1,13 @@
+/**
+ * Copyright (c) 2020-present Aukha Saukha Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 // @flow strict
 
-import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from '../../data/constants/app/config';
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from '@constants/app/config';
 
 import { getSettingFromUserStore } from './user-store';
 
@@ -111,4 +118,4 @@ async function getUserLocale() {
   return DEFAULT_LOCALE;
 }
 
-export default getUserLocale;
+export { getUserLocale };
